@@ -12,13 +12,28 @@
     <div id="app">
         <h1>Notes</h1>
         <div id="notes_list">
-            <!-- Notes will be displayed here -->
+            {% for note in notes %}
+            <div class="note" id="note-{{ note.id }}">
+                <div>{{ note.content }}</div>
+                <!-- Toggleable edit form for each note -->
+                <form action="{{ url_for('edit_note', note_id=note.id) }}" method="POST" style="display: none;" id="edit-form-{{ note.id }}">
+                    <textarea name="content">{{ note.content }}</textarea>
+                    <button type="submit">Save</button>
+                </form>
+                <!-- Edit button to toggle the edit form -->
+                <button onclick="toggleEditForm({{ note.id }})">Edit</button>
+                <form action="{{ url_for('delete_note', note_id=note.id) }}" method="POST" style="display: inline;">
+                    <button type="submit">Delete</button>
+                </form>
+            </div>
+            {% endfor %}
         </div>
-        <form id="note_form">
-            <textarea id="note_input" placeholder="Write a new note..."></textarea>
+        
+        <form id="note_form" action="/" method="POST">
+            <textarea id="note_input" name="note" placeholder="Write a new note..."></textarea>
             <button type="submit">Add Note</button>
         </form>
+        
     </div>
-    <script src="script.js"></script>
 </body>
 </html>
