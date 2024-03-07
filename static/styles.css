@@ -1,18 +1,18 @@
 .note-container {
     display: flex;
-    align-items: center; /* This vertically centers the items if they have different heights */
-    gap: 10px; /* Adds space between the children */
+    align-items: center; 
+    gap: 10px;
 }
 
 .note-content {
-    margin-right: auto; /* Ensures the note content takes up available space, pushing buttons to the end */
+    margin-right: auto; 
 }
 
 .note-form {
-    margin: 0; /* Removes default margin from forms */
+    margin: 0; 
 }
 
 .notebutton {
-    padding: 5px 10px; /* Example padding, adjust as needed */
-    cursor: pointer; /* Changes the cursor to indicate the buttons are clickable */
+    padding: 5px 10px;
+    cursor: pointer; 
 }
