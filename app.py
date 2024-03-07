@@ -3,6 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 
 
 app = Flask(__name__) # initialised flask and the root path
+app.secret_key = 'secret_key'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///notes.db' #setting db sqlight
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False #' disable Flask-SQLAlchemy event system, which is not needed and helps save resources.'
 
