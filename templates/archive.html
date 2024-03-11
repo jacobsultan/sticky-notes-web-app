@@ -4,14 +4,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Archive</title>
+    <title>Notes - Archive</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <script src="{{ url_for('static', filename='script.js') }}" defer></script>
 </head>
 <body>
     <header class = "header">
         <a href="{{ url_for('index') }}" id="notes-link" class = "links">Notes</a>
-        <!--<a href="{{ url_for('bin') }}" id="bin-link" class = "links">Bin</a> -->
+        <a href="{{ url_for('bin') }}" id="bin-link" class = "links">Bin</a>
     </header>
     <div id = "archiveapp">
         <h1>Archive</h1>
@@ -25,7 +25,7 @@
                 </form>
                 <button class="edit-button" data-note-id="{{ note.id }}" class = "notebutton">Edit</button>
 
-                <form action="{{ url_for('delete_note', note_id=note.id) }}" method="POST" class = "note-form">
+                <form action="{{ url_for('bin_note', note_id=note.id) }}" method="POST" class = "note-form">
                     <button type="submit" class = "notebutton">Delete</button>
                 </form>
 

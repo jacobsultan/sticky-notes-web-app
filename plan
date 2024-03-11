@@ -6,6 +6,14 @@ features:
 * delete a notes
 * archive
 * recently deleted
+* if archive is empty, archive link says "empty archive", when last note is removed from archive, takes you to main notes page
+* if bin is empty, bin link says "empty bin" , takes to home page
+* delete forever button
+* empty trash
+* sure?
+* Timestamp
+* Tags
+
 
 
 https://www.freecodecamp.org/learn/responsive-web-design/

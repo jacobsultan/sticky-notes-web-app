@@ -27,3 +27,7 @@ function toggleEditForm(noteId) {
         form.style.display = "none";
     }
 }
+
+function confirmDelete() {
+    return confirm('Are you certain you want to delete this permenantly?');
+}
