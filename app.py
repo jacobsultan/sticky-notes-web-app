@@ -62,19 +62,21 @@ def unarchive_note(note_id):
         flash('Note removed from archive successfully.')
     else:
         flash('Note not found.')
-    referrer = request.headers.get("Referer")
-    return redirect(referrer)
+    
+    if Note.query.filter_by(archived = True).count() == 0:
+        return redirect(url_for('index'))
+    else:
+        return redirect(ref())
 
 
 @app.route('/bin_note/<int:note_id>', methods=['POST']) #new route for deleting notes, passes the note_id an int into the delete_note function
 def bin_note(note_id):
-    note_to_delete = Note.query.get(note_id) #query gets the note from db to delete from the id
-    if note_to_delete: #makes sure the note exists and is found from the id 
-        note_to_delete.binned = True  #like staging
+    note_to_bin = Note.query.get(note_id) #query gets the note from db to delete from the id
+    if note_to_bin: #makes sure the note exists and is found from the id 
+        note_to_bin.binned = True  #like staging
         db.session.commit() #acc passes through (likely issue found here if present)
         flash('Note moved to bin.')
-    referrer = request.headers.get("Referer")
-    return redirect(referrer)
+    return redirect(url_for('index'))
 
 @app.route('/unbin_note/<int:note_id>', methods = ['POST'])
 def unbin_note(note_id):
@@ -82,8 +84,9 @@ def unbin_note(note_id):
     if note_to_undelete:
         note_to_undelete.binned = False
         db.session.commit()
-    referrer = request.headers.get("Referer")
-    return redirect(referrer)
+    if Note.query.filter_by(binned = True).count() == 0:
+        return redirect(url_for('index'))
+    return redirect(ref())
 
 @app.route('/edit/<int:note_id>', methods=['POST'])
 def edit_note(note_id):
@@ -95,8 +98,7 @@ def edit_note(note_id):
         flash('Note updated successfully.', 'success')
     else:
         flash('Note content cannot be blank.', 'error')
-    referrer = request.headers.get("Referer")
-    return redirect(referrer)
+    return redirect(ref())
 
 @app.route('/delete/<int:note_id>',methods = ["POST"])
 def delete_note(note_id):
@@ -107,7 +109,19 @@ def delete_note(note_id):
         flash("Note successfully deleted")
     else:
         flash("Note not found :'(")
-    return redirect(ref())
+    if Note.query.filter_by(binned = True).count() == 0:
+        return redirect(url_for('index'))
+    else:
+        return redirect(ref())
+
+@app.route('/empty_trash/', methods = ["POST"])
+def empty_trash():
+    notes_to_delete = Note.query.filter_by(binned=True).all()
+    for note in notes_to_delete:
+        db.session.delete(note)
+    db.session.commit()
+    flash("Trash successfully emptied")
+    return redirect(url_for('index'))
     
 
 
@@ -115,12 +129,20 @@ def delete_note(note_id):
 @app.route('/bin')
 def bin():
     binned_notes = Note.query.filter_by(binned = True).all()
-    return render_template('bin.html', notes=binned_notes)
+    if len(binned_notes) == 0:
+        flash("Bin is empty!")
+        return redirect(ref())
+    else:
+        return render_template('bin.html', notes=binned_notes)
 
 @app.route('/archive')
 def archive():
     archived_notes = Note.query.filter_by(archived=True, binned = False).all()
-    return render_template('archive.html',notes = archived_notes)
+    if len(archived_notes) == 0:
+        flash("Archive is empty!")
+        return redirect(ref())
+    else:
+        return render_template('archive.html',notes = archived_notes)
 
 
 

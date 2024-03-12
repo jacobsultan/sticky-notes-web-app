@@ -19,6 +19,11 @@
 
     <div id = "binapp">
         <h1>Recently Deleted</h1>
+        <div id = "deleteall">
+            <form action = "{{url_for('empty_trash')}}" method = "POST" onsubmit = "return confirmEmptyTrash()";>
+                <button type = "submit" id = "emptytrash">Empty Trash</button>
+            </form>
+        </div>
         <div id = "notes_list">
             {% for note in notes %}
             <div class = "note-container" id = "note-{{note.id}}">

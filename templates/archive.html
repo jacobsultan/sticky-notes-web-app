@@ -26,7 +26,7 @@
                 <button class="edit-button" data-note-id="{{ note.id }}" class = "notebutton">Edit</button>
 
                 <form action="{{ url_for('bin_note', note_id=note.id) }}" method="POST" class = "note-form">
-                    <button type="submit" class = "notebutton">Delete</button>
+                    <button type="submit" class = "notebutton">Move to bin</button>
                 </form>
 
                 <form action="{{url_for('unarchive_note', note_id=note.id)}}" method = "POST" class = "note-form">

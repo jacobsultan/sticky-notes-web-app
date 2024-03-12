@@ -31,3 +31,7 @@ function toggleEditForm(noteId) {
 function confirmDelete() {
     return confirm('Are you certain you want to delete this permenantly?');
 }
+
+function confirmEmptyTrash() {
+    return confirm("Selecting 'Yes' will permenantly delete all notes in your bin (this is irreversible)")
+}
