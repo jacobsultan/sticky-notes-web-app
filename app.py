@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for,flash
+from flask import Flask, render_template, request, redirect, url_for,flash, jsonify
 from flask_sqlalchemy import SQLAlchemy
 
 
@@ -74,6 +74,7 @@ def bin_note(note_id):
     note_to_bin = Note.query.get(note_id) #query gets the note from db to delete from the id
     if note_to_bin: #makes sure the note exists and is found from the id 
         note_to_bin.binned = True  #like staging
+        note_to_bin.archived = False
         db.session.commit() #acc passes through (likely issue found here if present)
         flash('Note moved to bin.')
     return redirect(url_for('index'))
@@ -129,25 +130,36 @@ def empty_trash():
 @app.route('/bin')
 def bin():
     binned_notes = Note.query.filter_by(binned = True).all()
-    if len(binned_notes) == 0:
-        flash("Bin is empty!")
-        return redirect(ref())
-    else:
-        return render_template('bin.html', notes=binned_notes)
+    return render_template('bin.html', notes=binned_notes)
 
 @app.route('/archive')
 def archive():
     archived_notes = Note.query.filter_by(archived=True, binned = False).all()
-    if len(archived_notes) == 0:
-        flash("Archive is empty!")
-        return redirect(ref())
-    else:
-        return render_template('archive.html',notes = archived_notes)
+    return render_template('archive.html',notes = archived_notes)
 
 
 
 if __name__ == '__main__':
     app.run(debug=True)
+
+
+@app.route('/check_bin')
+def check_bin():
+    if Note.query.filter_by(binned = True).count() == 0:
+        return jsonify({"is_empty": True})
+    else:
+        return jsonify({"is_empty": False})
+    
+
+
+
+@app.route('/check_archive')
+def check_archive():
+    if Note.query.filter_by(archived = True).count() == 0:
+        return jsonify({"is_empty": True})
+    else:
+        return jsonify({"is_empty": False})
+
 
 
 import os

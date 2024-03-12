@@ -19,6 +19,45 @@ document.querySelectorAll('.edit-button').forEach(button => {
 });
 
 
+document.addEventListener('DOMContentLoaded', function() {
+    const binLink = document.getElementById('bin-link');
+    const binUrl = binLink.getAttribute('data-bin-url');
+    binLink.addEventListener('click', function(e) {
+        e.preventDefault();
+        fetch('/check_bin')
+            .then(response => response.json())
+            .then(data => {
+                if (data.is_empty) {
+                    alert('Bin is empty!');
+                } else {
+                    window.location.href = binUrl;
+                }
+            })
+            .catch(error => console.error('Error:', error));
+    });
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    const archiveLink = document.getElementById('archive-link');
+    const archiveUrl = archiveLink.getAttribute('data-archive-url');
+    archiveLink.addEventListener('click', function(e) {
+        e.preventDefault();
+        fetch('/check_archive')
+            .then(response => response.json())
+            .then(data => {
+                if (data.is_empty) {
+                    alert('Archive is empty!');
+                } else {
+                    window.location.href = archiveUrl;
+                }
+            })
+            .catch(error => console.error('Error:', error));
+    });
+});
+
+
+
+
 function toggleEditForm(noteId) {
     const form = document.getElementById(`edit-form-${noteId}`);
     if (form.style.display === "none" || form.style.display === "") {

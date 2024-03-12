@@ -11,7 +11,7 @@
 <body>
     <header class = "header">
         <a href="{{ url_for('index') }}" id="notes-link" class = "links">Notes</a>
-        <a href="{{ url_for('bin') }}" id="bin-link" class = "links">Bin</a>
+        <a href="#" id="bin-link" data-bin-url="{{ url_for('bin') }}">Bin</a>
     </header>
     <div id = "archiveapp">
         <h1>Archive</h1>

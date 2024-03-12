@@ -14,9 +14,7 @@
 
     <header>
         <a href = "{{ url_for('index')}}" id = "notes-link" class = "links">Notes</a>
-        <a href = "{{ url_for('archive')}}" id = "archive-link" class = "links">Archive</a>
-    </header>
-
+        <a href="#" id="archive-link" data-archive-url="{{ url_for('archive') }}">Archive</a>
     <div id = "binapp">
         <h1>Recently Deleted</h1>
         <div id = "deleteall">
