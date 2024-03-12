@@ -26,6 +26,7 @@
             {% for note in notes %}
             <div class = "note-container" id = "note-{{note.id}}">
                 <div class = "note-content">{{note.content}}</div>
+                <div class = "note-date">{{note.date.strftime('%d-%m-%Y')}}</div>
 
                 <form action = "{{ url_for('unbin_note', note_id = note.id)}}" method = "POST" class = "note-form">
                     <button type = "submit" class = "notebutton">Return from bin</button>

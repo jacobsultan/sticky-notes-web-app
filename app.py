@@ -1,5 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for,flash, jsonify
 from flask_sqlalchemy import SQLAlchemy
+from datetime import datetime
+
 
 
 app = Flask(__name__) # initialised flask and the root path
@@ -15,6 +17,7 @@ class Note(db.Model): #db.model is a class that you inherit from for all models 
     content = db.Column(db.String(200), nullable=False) #second column sets max input as 200chars and cant be empty
     archived = db.Column(db.Boolean, default=False, nullable=False)
     binned = db.Column(db.Boolean, default=False, nullable=False)
+    date = db.Column(db.DateTime, default =datetime.utcnow)
 
 
 with app.app_context():# push context manually to app
@@ -95,7 +98,9 @@ def edit_note(note_id):
     edited_content = request.form['content'].strip()
     if edited_content:
         note.content = edited_content
+        note.date = note.date = datetime.utcnow()
         db.session.commit()
+
         flash('Note updated successfully.', 'success')
     else:
         flash('Note content cannot be blank.', 'error')
