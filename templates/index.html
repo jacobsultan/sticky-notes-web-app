@@ -40,6 +40,10 @@
                     <button type="submit" class = "notebutton">Archive</button>
                 </form>
 
+                <form action="{{ url_for('toggle_pin', note_id=note.id) }}" method="post">
+                    <button type="submit">{{ 'Unpin' if note.pinned else 'Pin' }}</button>
+                </form>
+
             </div>
             {% endfor %}
         </div>

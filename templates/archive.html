@@ -19,7 +19,10 @@
             {% for note in notes %}
             <div class="note-container" id="note-{{ note.id }}">
                 <div class = "note-content">{{ note.content }}</div>
-                <div class = "note-date">{{note.date.strftime('%d-%m-%Y')}}</div>
+                <div>
+                    <div>Last updated:</div>
+                    <div class = "note-date">{{note.date.strftime('%d-%m-%Y')}}</div>
+                </div>
 
                 <form action="{{ url_for('edit_note', note_id=note.id) }}" method="POST" style="display: none;" id="edit-form-{{ note.id }}" class = "note-form">
                     <textarea name="content">{{ note.content }}</textarea>
@@ -34,6 +37,11 @@
                 <form action="{{url_for('unarchive_note', note_id=note.id)}}" method = "POST" class = "note-form">
                     <button type="submit" class = "notebutton">Remove from archive</button>
                 </form>
+
+                <form action="{{ url_for('toggle_pin', note_id=note.id) }}" method="post">
+                    <button type="submit">{{ 'Unpin' if note.pinned else 'Pin' }}</button>
+                </form>
+                
             </div>
             {% endfor %}
         </div>

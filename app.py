@@ -18,6 +18,7 @@ class Note(db.Model): #db.model is a class that you inherit from for all models 
     archived = db.Column(db.Boolean, default=False, nullable=False)
     binned = db.Column(db.Boolean, default=False, nullable=False)
     date = db.Column(db.DateTime, default =datetime.utcnow)
+    pinned = db.Column(db.Boolean,default = False)
 
 
 with app.app_context():# push context manually to app
@@ -39,10 +40,16 @@ def index():
                 print("Failed to add note:", e)
                 db.session.rollback()  # Rollback the session in case of error
         return redirect(url_for('index')) #preventative measure for resubmitting 
-    notes = Note.query.filter_by(archived=False, binned = False).all() #sqlachemy to request all notes to show
-    return render_template('index.html', notes=notes) #this renders all the notes found in the db though index
+    ordered_notes = Note.query.filter_by(archived=False, binned=False).order_by(Note.pinned.desc(), Note.date.desc()).all()
 
+    return render_template('index.html', notes=ordered_notes) #this renders all the notes found in the db though index
 
+@app.route('/toggle_pin/<int:note_id>', methods=['POST'])
+def toggle_pin(note_id):
+    note = Note.query.get(note_id)
+    note.pinned = not note.pinned  # Toggle pin status
+    db.session.commit()
+    return redirect(ref())  
 
 @app.route('/archive_note/<int:note_id>', methods=['POST'])
 def archive_note(note_id):
