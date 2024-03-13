@@ -13,12 +13,20 @@
         <a href="#" id="archive-link" data-archive-url="{{ url_for('archive') }}">Archive</a>
         <a href="#" id="bin-link" data-bin-url="{{ url_for('bin') }}">Bin</a>
     </header>
+    <div id = "search">
+        <h3>Search</h3>
+        <form action = "/search" method = "GET">
+            <input type = "text" name="query" placeholder="Search notes...">
+            <button type="submit">Search</button>
+        </form>
+    </div>
     <div id="app">
         <h1>Notes</h1>
         <div id="notes_list">
             {% for note in notes %}
             <div class="note-container" id="note-{{ note.id }}">
                 <div class = "note-content">{{ note.content }}</div>
+                
                 <div>
                     <div>Last updated:</div>
                     <div class = "note-date">{{note.date.strftime('%d-%m-%Y %H:%M')}}</div>

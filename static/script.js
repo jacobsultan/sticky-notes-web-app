@@ -56,6 +56,30 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 
+document.addEventListener('DOMContentLoaded', function() {
+    const binButton = document.getElementById('move-to-bin-button');
+    binButton.addEventListener('click', function(e) {
+        e.preventDefault();
+        
+        // Trigger form submission
+        const form = document.getElementById('move-to-bin-button');
+        form.submit();
+        
+        // After form submission, check if the archive is empty
+        fetch('/check_archive')
+            .then(response => response.json())
+            .then(data => {
+                if (data.is_empty) {
+                    window.location.href = '';
+                } else {
+                    window.location.href = 'archive';
+                }
+            })
+            .catch(error => console.error('Error:', error));
+    });
+});
+
+
 
 
 function toggleEditForm(noteId) {

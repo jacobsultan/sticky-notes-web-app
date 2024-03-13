@@ -41,13 +41,27 @@ def index():
                 db.session.rollback()  # Rollback the session in case of error
         return redirect(url_for('index')) #preventative measure for resubmitting 
     ordered_notes = Note.query.filter_by(archived=False, binned=False).order_by(Note.pinned.desc(), Note.date.desc()).all()
-
     return render_template('index.html', notes=ordered_notes) #this renders all the notes found in the db though index
+
 
 @app.route('/toggle_pin/<int:note_id>', methods=['POST'])
 def toggle_pin(note_id):
     note = Note.query.get(note_id)
     note.pinned = not note.pinned  # Toggle pin status
+    db.session.commit()
+    return redirect(ref())
+
+@app.route('/toggle_bin/<int:note_id>',methods = ["POST"])
+def toggle_bin(note_id):
+    note = Note.query.get(note_id)
+    note.binned = not note.binned
+    db.session.commit()
+    return redirect(ref())
+
+@app.route('/toggle_archived/<int:note_id>',methods = ["POST"])
+def toggle_archived(note_id):
+    note = Note.query.get(note_id)
+    note.archived = not note.archived
     db.session.commit()
     return redirect(ref())  
 
@@ -87,7 +101,11 @@ def bin_note(note_id):
         note_to_bin.archived = False
         db.session.commit() #acc passes through (likely issue found here if present)
         flash('Note moved to bin.')
-    return redirect(url_for('index'))
+    if '/archive' in request.referrer:
+        if Note.query.filter_by(archived=True, binned=False).count() == 0:
+            return redirect(url_for('index'))
+        
+    return redirect(ref())
 
 @app.route('/unbin_note/<int:note_id>', methods = ['POST'])
 def unbin_note(note_id):
@@ -141,12 +159,12 @@ def empty_trash():
 
 @app.route('/bin')
 def bin():
-    binned_notes = Note.query.filter_by(binned = True).all()
+    binned_notes = Note.query.filter_by(binned = True).order_by(Note.pinned.desc(), Note.date.desc()).all()
     return render_template('bin.html', notes=binned_notes)
 
 @app.route('/archive')
 def archive():
-    archived_notes = Note.query.filter_by(archived=True, binned = False).all()
+    archived_notes = Note.query.filter_by(archived=True, binned = False).order_by(Note.pinned.desc(), Note.date.desc()).all()
     return render_template('archive.html',notes = archived_notes)
 
 
@@ -171,6 +189,20 @@ def check_archive():
         return jsonify({"is_empty": True})
     else:
         return jsonify({"is_empty": False})
+
+@app.route('/search')
+def search():
+    query = request.args.get('query', '')
+    search_notes_main = Note.query.filter(Note.content.ilike(f'%{query}%'), Note.archived == False, Note.binned == False)
+    search_notes_main_ord = search_notes_main.order_by(Note.pinned.desc(), Note.date.desc()).all()
+    search_notes_archive = Note.query.filter(Note.content.ilike(f'%{query}%'), Note.archived == True, Note.binned == False)
+    search_notes_archive_ord = search_notes_archive.order_by(Note.pinned.desc(), Note.date.desc()).all()
+    search_notes_bin = Note.query.filter(Note.content.ilike(f'%{query}%'),Note.binned == True)
+    search_notes_bin_ord = search_notes_bin.order_by(Note.pinned.desc(), Note.date.desc()).all()
+
+    return render_template('search.html', notes_main=search_notes_main_ord,notes_archive = search_notes_archive_ord,notes_bin = search_notes_bin_ord, searchcontent = query)
+
+
 
 
 

@@ -1,0 +1,133 @@
+<!-- templates/archive.html -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notes - Search</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="{{ url_for('static', filename='script.js') }}" defer></script>
+</head>
+
+<body>
+    <header class = "header">
+        <a href="{{ url_for('index') }}" id="notes-link" class = "links">Notes</a>
+        <a href = "#" id="archive-link" data-archive-url="{{ url_for('archive') }}">Archive</a>
+        <a href="#" id="bin-link" data-bin-url="{{ url_for('bin') }}">Bin</a>
+    </header>
+
+    <div id = "searchapp">
+        <h1>Search Results: </h1>
+        <p>{{searchcontent}}</p>
+        <div id = "search_list_main">
+            {% for note in notes_main %}
+                <div class="note">
+                    <!-- Display the note's content and other properties as needed -->
+                    <p>{{ note.content }}</p>
+                </div>
+
+                <div>
+                    <div>Last updated:</div>
+                    <div class = "note-date">{{note.date.strftime('%d-%m-%Y %H:%M')}}</div>
+                </div>
+                
+
+                <form action="{{ url_for('edit_note', note_id=note.id) }}" method="POST" style="display: none;" id="edit-form-{{ note.id }}" class = "note-form">
+                    <textarea name="content">{{ note.content }}</textarea>
+                    <button type="submit">Save</button>
+                </form>
+
+                <button class="edit-button" data-note-id="{{ note.id }}" class = "notebutton">Edit</button>
+
+                <form action="{{ url_for('toggle_bin', note_id=note.id) }}" method="POST">
+                    <button type="submit">Move to bin</button>
+                </form>
+
+                <form action="{{url_for('toggle_archived', note_id=note.id)}}" method = "POST">
+                    <button type="submit">Archive</button>
+                </form>
+
+                <form action="{{ url_for('toggle_pin', note_id=note.id) }}" method="post">
+                    <button type="submit">{{ 'Unpin' if note.pinned else 'Pin' }}</button>
+                </form>
+
+            {% endfor %}
+        </div>
+
+        <div>
+            <h3>Archived</h1>
+            <div id = "search_list_archive">
+                {% for note in notes_archive %}
+                <div class="note">
+                    <!-- Display the note's content and other properties as needed -->
+                    <p>{{ note.content }}</p>
+                    <div>
+                        <div>Last updated:</div>
+                        <div class = "note-date">{{note.date.strftime('%d-%m-%Y %H:%M')}}</div>
+                    </div>
+                    
+    
+                    <form action="{{ url_for('edit_note', note_id=note.id) }}" method="POST" style="display: none;" id="edit-form-{{ note.id }}" class = "note-form">
+                        <textarea name="content">{{ note.content }}</textarea>
+                        <button type="submit">Save</button>
+                    </form>
+    
+                    <button class="edit-button" data-note-id="{{ note.id }}" class = "notebutton">Edit</button>
+    
+                    <form action="{{ url_for('toggle_bin', note_id=note.id) }}" method="POST">
+                        <button type="submit">Move to bin</button>
+                    </form>
+
+                    <form action="{{url_for('toggle_archived', note_id=note.id)}}" method = "POST">
+                        <button type="submit">Remove from Archive</button>
+                    </form>
+
+                    <form action="{{ url_for('toggle_pin', note_id=note.id) }}" method="post">
+                        <button type="submit">{{ 'Unpin' if note.pinned else 'Pin' }}</button>
+                    </form>
+
+                </div>
+                {% else %}
+                    <p>No matches found in the archive.</p>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div>
+            <h3>Bin</h1>
+            <div id = "search_list_archive">
+                {% for note in notes_bin %}
+                <div class="note">
+                    <!-- Display the note's content and other properties as needed -->
+                    <p>{{ note.content }}</p>
+                </div>
+
+                <div>
+                    <div>Last updated:</div>
+                    <div class = "note-date">{{note.date.strftime('%d-%m-%Y %H:%M')}}</div>
+                </div>
+
+                <form action="{{ url_for('edit_note', note_id=note.id) }}" method="POST" style="display: none;" id="edit-form-{{ note.id }}" class = "note-form">
+                    <textarea name="content">{{ note.content }}</textarea>
+                    <button type="submit">Save</button>
+                </form>
+
+                <button class="edit-button" data-note-id="{{ note.id }}" class = "notebutton">Edit</button>
+
+                <form action="{{ url_for('toggle_bin', note_id=note.id) }}" method="POST">
+                    <button type="submit">Remove from bin</button>
+                </form>
+
+                <form action="{{ url_for('toggle_pin', note_id=note.id) }}" method="post">
+                    <button type="submit">{{ 'Unpin' if note.pinned else 'Pin' }}</button>
+                </form>
+                {% else %}
+                    <p> No matches found in the Bin.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+

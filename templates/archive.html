@@ -34,6 +34,7 @@
                     <button type="submit" class = "notebutton">Move to bin</button>
                 </form>
 
+
                 <form action="{{url_for('unarchive_note', note_id=note.id)}}" method = "POST" class = "note-form">
                     <button type="submit" class = "notebutton">Remove from archive</button>
                 </form>
@@ -41,7 +42,7 @@
                 <form action="{{ url_for('toggle_pin', note_id=note.id) }}" method="post">
                     <button type="submit">{{ 'Unpin' if note.pinned else 'Pin' }}</button>
                 </form>
-                
+
             </div>
             {% endfor %}
         </div>
