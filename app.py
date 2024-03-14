@@ -64,11 +64,15 @@ def archive():
     else:
         return redirect(url_for('index'))
 
-@app.route('/bin')
+@app.route('/bin', methods = ['GET'])
 def bin():
+    query = request.args.get('query', '')
     binned_notes = Note.query.filter_by(binned = True).order_by(Note.pinned.desc(), Note.date.desc()).all()
+    search_results_bin = []
+    if query:
+        search_results_bin = Note.query.filter(Note.content.ilike(f'%{query}%'), Note.binned == True).order_by(Note.pinned.desc(),Note.date.desc()).all()
     if binned_notes:
-        return render_template('bin.html', notes=binned_notes)
+        return render_template('bin.html', notes=binned_notes, search_results = search_results_bin, query = query)
     else:
         return redirect(url_for('index'))
 

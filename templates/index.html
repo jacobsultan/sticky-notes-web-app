@@ -29,8 +29,9 @@
 
         <div id = notes_list_bit>
             {% if query %}
-                <h2>Search Results for: "{{ query }}"</h2>
+                
                 {% if search_results.main or search_results.archive or search_results.bin %}
+                    <h2>Search Results for: "{{ query }}"</h2>
                     {% if search_results.main %}
                         <h3>Main</h3>
                         {% for note in search_results.main %}
@@ -66,11 +67,10 @@
                     {% endif %}
                      
                 {% else %}
-                    <p>No results found :&#40;</p>
+                    <p>No results found for "{{ query }}" :&#40;</p>
                 {% endif %}
 
             {% else %}
-                <h2>Notes</h2>
                 <!-- Display Regular Notes -->
                 {% for note in notes %}
                     <p>{{ note.content }}</p>

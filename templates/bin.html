@@ -11,32 +11,48 @@
 </head>
 
 <body>
-    {% from "_macros.html" import toggle_bin_button,display_date %}
+    {% from "_macros.html" import toggle_bin_button,display_date, delete_button,search_box %}
     <header>
         <a href = "{{ url_for('index')}}" id = "notes-link" class = "links">Notes</a>
         <a href = "#" id="archive-link" data-archive-url="{{ url_for('archive') }}">Archive</a>
+    </header>
+
     <div id = "binapp">
         <h1>Recently Deleted</h1>
+
         <div id = "deleteall">
             <form action = "{{url_for('empty_trash')}}" method = "POST" onsubmit = "return confirmEmptyTrash()";>
                 <button type = "submit" id = "emptytrash">Empty Trash</button>
             </form>
         </div>
+
+        {{ search_box('bin', query)}}
         <div id = "notes_list">
-            {% for note in notes %}
-            <div class = "note-container" id = "note-{{note.id}}">
-                <div class = "note-content">{{note.content}}</div>
-                {{ toggle_bin_button(note) }}
-                <form action = "{{url_for('delete_note', note_id = note.id)}}" method = "POST" class = "note-form" onsubmit="return confirmDelete()";>
-                    <button type = "submit" class = "notebutton delete-forever">Delete forever</button>
-                </form>
-                {{ display_date(note) }}
-                
+            {% if query %}
+                {% if search_results %}
+                    <h2>Search Results for: "{{ query }}" in bin</h2>
+                    {% for note in search_results %}
+                        <p>{{ note.content }}</p>
+                        {{ toggle_bin_button(note) }}
+                        {{ delete_button(note) }}
+                        {{ display_date(note) }}
+                    {% endfor %}
+                {% else %}
+                    <p>No results found for "{{ query }}" :&#40;</p>
+                {% endif %}
+
+            {% else %}
+                {% for note in notes %}
+                    <p>{{ note.content }}</p>
+                    {{ toggle_bin_button(note) }}
+                    {{ delete_button }}
+                    {{ display_date(note) }}
+                </div>
+                {% endfor %}
+            {% endif %}
             </div>
-            {% endfor %}
         </div>
     </div>
-
 </body>
 
 </html>

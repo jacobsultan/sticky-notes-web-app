@@ -9,7 +9,7 @@
     <script src="{{ url_for('static', filename='script.js') }}" defer></script>
 </head>
 <body>
-    {% from "_macros.html" import toggle_pin_button, display_datetime,toggle_bin_button,toggle_archived_button,edit_button,display_date,search_box %}
+    {% from "_macros.html" import toggle_bin_button,toggle_archived_button,display_date,search_box %}
 
     <header class = "header">
         <a href="{{ url_for('index') }}" id="notes-link" class = "links">Notes</a>
@@ -23,8 +23,8 @@
 
         <div id = "notes_list">
             {% if query %}
-                <h2>Search Results for: "{{ query }}" in archive</h2>
                 {% if search_results %}
+                    <h2>Search Results for: "{{ query }}" in archive</h2>
                     {% for note in search_results %}
                         <p>{{ note.content }}</p>
                         {{ toggle_archived_button(note) }}
@@ -32,7 +32,7 @@
                         {{ display_date(note) }}
                     {% endfor %}
                 {% else %}
-                    <p>No results found :&#40;</p>
+                    <p>No results found for "{{ query }}" :&#40;</p>
                 {% endif %}
 
             {% else %}
@@ -40,21 +40,14 @@
                 
                 <div class="note-container" id="note-{{ note.id }}">
                     <div class = "note-content">{{ note.content }}</div>
-                    {{ edit_button(note) }}
                     {{ toggle_archived_button(note) }}
                     {{ toggle_bin_button(note) }}
-                    {{ toggle_pin_button(note) }}
                     {{ display_date(note) }}
 
                 </div>
                 {% endfor %}
             {% endif %}
-
-
-            
         </div>
-        
     </div>
-    
 </body>
 </html>
