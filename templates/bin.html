@@ -11,7 +11,7 @@
 </head>
 
 <body>
-
+    {% from "_macros.html" import toggle_bin_button,display_date %}
     <header>
         <a href = "{{ url_for('index')}}" id = "notes-link" class = "links">Notes</a>
         <a href = "#" id="archive-link" data-archive-url="{{ url_for('archive') }}">Archive</a>
@@ -26,22 +26,11 @@
             {% for note in notes %}
             <div class = "note-container" id = "note-{{note.id}}">
                 <div class = "note-content">{{note.content}}</div>
-                <div>
-                    <div>Last updated:</div>
-                    <div class = "note-date">{{note.date.strftime('%d-%m-%Y')}}</div>
-                </div>
-
-                <form action = "{{ url_for('unbin_note', note_id = note.id)}}" method = "POST" class = "note-form">
-                    <button type = "submit" class = "notebutton">Return from bin</button>
-                </form>
-
-                <form action="{{ url_for('toggle_pin', note_id=note.id) }}" method="post">
-                    <button type="submit">{{ 'Unpin' if note.pinned else 'Pin' }}</button>
-                </form>
-
+                {{ toggle_bin_button(note) }}
                 <form action = "{{url_for('delete_note', note_id = note.id)}}" method = "POST" class = "note-form" onsubmit="return confirmDelete()";>
                     <button type = "submit" class = "notebutton delete-forever">Delete forever</button>
                 </form>
+                {{ display_date(note) }}
                 
             </div>
             {% endfor %}

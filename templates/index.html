@@ -9,24 +9,93 @@
     <script src="{{ url_for('static', filename='script.js') }}" defer></script>
 </head>
 <body>
+    {% from "_macros.html" import toggle_pin_button, display_datetime,toggle_bin_button,toggle_archived_button,edit_button,display_date %}
+
     <header class = "header">
         <a href="#" id="archive-link" data-archive-url="{{ url_for('archive') }}">Archive</a>
         <a href="#" id="bin-link" data-bin-url="{{ url_for('bin') }}">Bin</a>
     </header>
-    <div id = "search">
-        <h3>Search</h3>
-        <form action = "/search" method = "GET">
-            <input type = "text" name="query" placeholder="Search notes...">
-            <button type="submit">Search</button>
-        </form>
-    </div>
+
     <div id="app">
         <h1>Notes</h1>
+        <div id = "search_bit">
+            <form action="{{ url_for('index') }}" method="GET">
+                <input type="text" name="query" placeholder="Search notes..." value="{{ query }}">
+                <button type="submit">Search</button>
+            </form>
+        </div>
+
+        <div id = "note_bit">
+            <form id="note_form" action="/" method="POST">
+                <textarea id="note_input" name="note" placeholder="Write a new note..."></textarea>
+                <button type="submit">Add Note</button>
+            </form>
+        </div>
+
+        <div id = notes_list_bit>
+            {% if query %}
+                <h2>Search Results for: "{{ query }}"</h2>
+                {% if search_results.main or search_results.archive or search_results.bin %}
+                    {% if search_results.main %}
+                        <h3>Main</h3>
+                        {% for note in search_results.main %}
+                            <p>{{ note.content }}</p>
+                            {{ edit_button(note) }}
+                            {{ toggle_archived_button(note) }}
+                            {{ toggle_bin_button(note) }}
+                            {{ toggle_pin_button(note) }}
+                            {{ display_datetime(note) }}
+                        {% endfor %}
+                    {% endif %}
+                    {% if search_results.archive %}
+                        <h3>Archive</h3>
+                        <!-- Display Archive Search Results -->
+                        {% for note in search_results.archive %}
+                            <p>{{ note.content }}</p>
+                            {{ toggle_archived_button(note) }}
+                            {{ toggle_bin_button(note) }}
+                            {{ display_date(note) }}
+                        {% endfor %}
+                    {% endif %}
+                    {% if search_results.bin %}
+                        <h3>Bin</h3>
+                        <!-- Display Bin Search Results -->
+                        {% for note in search_results.bin %}
+                            <p>{{ note.content }}</p>
+                            {{ edit_button(note) }}
+                            {{ toggle_archived_button(note) }}
+                            {{ toggle_bin_button(note) }}
+                            {{ toggle_pin_button(note) }}
+                            {{ display_date(note) }}
+                        {% endfor %}
+                    {% endif %}
+                     
+                {% else %}
+                    <p>No results found :&#40;</p>
+                {% endif %}
+
+            {% else %}
+                <h2>Notes</h2>
+                <!-- Display Regular Notes -->
+                {% for note in notes %}
+                    <p>{{ note.content }}</p>
+                    {{ edit_button(note) }}
+                    {{ toggle_archived_button(note) }}
+                    {{ toggle_bin_button(note) }}
+                    {{ toggle_pin_button(note) }}
+                    {{ display_datetime(note) }}
+                {% endfor %}
+            {% endif %}
+
+        </div>
+        
+        
+        <!--
         <div id="notes_list">
             {% for note in notes %}
             <div class="note-container" id="note-{{ note.id }}">
                 <div class = "note-content">{{ note.content }}</div>
-                
+
                 <div>
                     <div>Last updated:</div>
                     <div class = "note-date">{{note.date.strftime('%d-%m-%Y %H:%M')}}</div>
@@ -54,12 +123,9 @@
 
             </div>
             {% endfor %}
-        </div>
+        </div> -->
         
-        <form id="note_form" action="/" method="POST">
-            <textarea id="note_input" name="note" placeholder="Write a new note..."></textarea>
-            <button type="submit">Add Note</button>
-        </form>
+        
         
     </div>
 </body>

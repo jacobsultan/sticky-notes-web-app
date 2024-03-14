@@ -9,6 +9,8 @@
     <script src="{{ url_for('static', filename='script.js') }}" defer></script>
 </head>
 <body>
+    {% from "_macros.html" import toggle_pin_button, display_datetime,toggle_bin_button,toggle_archived_button,edit_button,display_date %}
+
     <header class = "header">
         <a href="{{ url_for('index') }}" id="notes-link" class = "links">Notes</a>
         <a href="#" id="bin-link" data-bin-url="{{ url_for('bin') }}">Bin</a>
@@ -17,32 +19,14 @@
         <h1>Archive</h1>
         <div id = "notes_list">
             {% for note in notes %}
+            
             <div class="note-container" id="note-{{ note.id }}">
                 <div class = "note-content">{{ note.content }}</div>
-                <div>
-                    <div>Last updated:</div>
-                    <div class = "note-date">{{note.date.strftime('%d-%m-%Y')}}</div>
-                </div>
-
-                <form action="{{ url_for('edit_note', note_id=note.id) }}" method="POST" style="display: none;" id="edit-form-{{ note.id }}" class = "note-form">
-                    <textarea name="content">{{ note.content }}</textarea>
-                    <button type="submit">Save</button>
-                </form>
-                <button class="edit-button" data-note-id="{{ note.id }}" class = "notebutton">Edit</button>
-
-                <form action="{{ url_for('bin_note', note_id=note.id) }}" method="POST" class = "note-form">
-                    <button type="submit" class = "notebutton">Move to bin</button>
-                </form>
-
-
-                <form action="{{url_for('unarchive_note', note_id=note.id)}}" method = "POST" class = "note-form">
-                    <button type="submit" class = "notebutton">Remove from archive</button>
-                </form>
-
-                <form action="{{ url_for('toggle_pin', note_id=note.id) }}" method="post">
-                    <button type="submit">{{ 'Unpin' if note.pinned else 'Pin' }}</button>
-                </form>
-
+                {{ edit_button(note) }}
+                {{ display_date(note) }}
+                {{ toggle_archived_button(note) }}
+                {{ toggle_bin_button(note) }}
+                {{ toggle_pin_button(note) }}
             </div>
             {% endfor %}
         </div>

@@ -1,3 +1,4 @@
+// new note
 document.addEventListener('DOMContentLoaded', () => {
     const noteForm = document.getElementById('note_form');
     const noteInput = document.getElementById('note_input');
@@ -10,7 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-
+// edit button
 document.querySelectorAll('.edit-button').forEach(button => {
     button.addEventListener('click', function() {
         const noteId = button.getAttribute('data-note-id');
@@ -18,7 +19,7 @@ document.querySelectorAll('.edit-button').forEach(button => {
     });
 });
 
-
+// Bin link
 document.addEventListener('DOMContentLoaded', function() {
     const binLink = document.getElementById('bin-link');
     const binUrl = binLink.getAttribute('data-bin-url');
@@ -37,6 +38,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
+// Archive link
 document.addEventListener('DOMContentLoaded', function() {
     const archiveLink = document.getElementById('archive-link');
     const archiveUrl = archiveLink.getAttribute('data-archive-url');
