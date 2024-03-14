@@ -44,14 +44,36 @@ def index():
                 db.session.rollback()  # Rollback the session in case of error
         return redirect(url_for('index')) #preventative measure for resubmitting 
     ordered_notes = Note.query.filter_by(archived=False, binned=False).order_by(Note.pinned.desc(), Note.date.desc()).all()
-
     search_results = {}
     if query:
-        search_results['main'] = Note.query.filter(Note.content.ilike(f'%{query}%'), Note.archived==False, Note.binned==False).order_by(Note.date.desc()).all()
-        search_results['archive'] = Note.query.filter(Note.content.ilike(f'%{query}%'), Note.archived==True, Note.binned==False).order_by(Note.date.desc()).all()
-        search_results['bin'] = Note.query.filter(Note.content.ilike(f'%{query}%'), Note.binned==True).order_by(Note.date.desc()).all()
+        search_results['main'] = Note.query.filter(Note.content.ilike(f'%{query}%'), Note.archived==False, Note.binned==False).order_by(Note.pinned.desc(),Note.date.desc()).all()
+        search_results['archive'] = Note.query.filter(Note.content.ilike(f'%{query}%'), Note.archived==True, Note.binned==False).order_by(Note.pinned.desc(),Note.date.desc()).all()
+        search_results['bin'] = Note.query.filter(Note.content.ilike(f'%{query}%'), Note.binned==True).order_by(Note.pinned.desc(),Note.date.desc()).all()
 
     return render_template('index.html', notes=ordered_notes, search_results=search_results, query=query)
+
+@app.route('/archive',methods=['GET'])
+def archive():
+    query = request.args.get('query', '')
+    archived_notes = Note.query.filter_by(archived=True, binned = False).order_by(Note.pinned.desc(), Note.date.desc()).all()
+    search_results_archive = []
+    if query:
+        search_results_archive = Note.query.filter(Note.content.ilike(f'%{query}%'), Note.archived==True, Note.binned==False).order_by(Note.pinned.desc(),Note.date.desc()).all()
+    if archived_notes:
+        return render_template('archive.html', notes=archived_notes, search_results = search_results_archive, query = query)
+    else:
+        return redirect(url_for('index'))
+
+@app.route('/bin')
+def bin():
+    binned_notes = Note.query.filter_by(binned = True).order_by(Note.pinned.desc(), Note.date.desc()).all()
+    if binned_notes:
+        return render_template('bin.html', notes=binned_notes)
+    else:
+        return redirect(url_for('index'))
+
+
+
 
 
 
@@ -169,21 +191,7 @@ def empty_trash():
 
 
 
-@app.route('/bin')
-def bin():
-    binned_notes = Note.query.filter_by(binned = True).order_by(Note.pinned.desc(), Note.date.desc()).all()
-    if binned_notes:
-        return render_template('bin.html', notes=binned_notes)
-    else:
-        return redirect(url_for('index'))
 
-@app.route('/archive')
-def archive():
-    archived_notes = Note.query.filter_by(archived=True, binned = False).order_by(Note.pinned.desc(), Note.date.desc()).all()
-    if archived_notes:
-        return render_template('archive.html', notes=archived_notes)
-    else:
-        return redirect(url_for('index'))
 
 
 

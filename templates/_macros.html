@@ -17,12 +17,6 @@
 <button class="edit-button" data-note-id="{{ note.id }}" class = "notebutton">Edit</button>
 {% endmacro %}
 
-{% macro action_button(url, note_id, button_text, button_class="notebutton") %}
-    <form action="{{ url_for(url, note_id=note_id) }}" method="POST" class="note-form">
-        <button type="submit" class="{{ button_class }}">{{ button_text }}</button>
-    </form>
-{% endmacro %}
-
 {% macro toggle_bin_button(note) %}
     <form action="{{ url_for('toggle_bin', note_id=note.id) }}" method="POST">
         <button type="submit" class="{{ button_class }}">{{ 'Remove from bin' if note.binned else 'Move to bin' }}</button>
@@ -40,3 +34,14 @@
         <button type="submit">{{ 'Unpin' if note.pinned else 'Pin' }}</button>
     </form>
 {% endmacro %}
+
+
+{% macro search_box(url, query) %}
+    <div id = "search_bit">
+        <form action="{{ url_for(url) }}" method="GET">
+            <input type="text" name="query" placeholder="Search notes..." value="{{ query }}">
+            <button type="submit">Search</button>
+        </form>
+    </div>
+{% endmacro %}
+
