@@ -2,18 +2,17 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Notes - Archive</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <script src="{{ url_for('static', filename='script.js') }}" defer></script>
+    {% from "other_macros.html" import head_elements %}
+    {{ head_elements() }}
+    <title>Notes: Archive</title>
 </head>
 <body>
-    {% from "_macros.html" import comb_archive_buttons,search_box %}
+    {% from "other_macros.html" import index_link, bin_link, search_box %}
+    {% from "meta_macros.html" import comb_archive_buttons %}
 
     <header class = "header">
-        <a href="{{ url_for('index') }}" id="notes-link" class = "links">Notes</a>
-        <a href="#" id="bin-link" data-bin-url="{{ url_for('bin') }}">Bin</a>
+        {{ index_link() }}
+        {{ bin_link() }}
     </header>
 
     <div id = "archiveapp">

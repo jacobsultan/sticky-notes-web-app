@@ -1,0 +1,25 @@
+{% from "button_macros.html" import toggle_archived_button,toggle_bin_button,toggle_pin_button %}
+{% from "button_macros.html" import display_datetime,display_date,edit_button,delete_button %}
+
+{% macro comb_main_buttons(note) %}
+    <p>{{ note.content }}</p>
+    {{ edit_button(note) }}
+    {{ toggle_archived_button(note) }}
+    {{ toggle_bin_button(note) }}
+    {{ toggle_pin_button(note) }}
+    {{ display_datetime(note) }}
+{% endmacro %}
+
+{% macro comb_archive_buttons(note) %}
+    <p>{{ note.content }}</p>
+    {{ toggle_archived_button(note) }}
+    {{ toggle_bin_button(note) }}
+    {{ display_date(note) }}
+{% endmacro %}
+
+{% macro comb_bin_buttons(note) %}
+    <p>{{ note.content }}</p>
+    {{ toggle_bin_button(note) }}
+    {{ delete_button(note) }}
+    {{ display_date(note) }}
+{% endmacro %}

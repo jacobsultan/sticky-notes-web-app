@@ -2,17 +2,16 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Notes App</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <script src="{{ url_for('static', filename='script.js') }}" defer></script>
+    {% from "other_macros.html" import head_elements %}
+    {{ head_elements() }}
+    <title>Notes</title>
 </head>
 <body>
-    {% from "_macros.html" import toggle_pin_button,toggle_bin_button,toggle_archived_button,edit_button,delete_button,display_date,display_datetime,search_box,comb_main_buttons,comb_archive_buttons,comb_bin_buttons%}
+    {% from "other_macros.html" import archive_link, bin_link, new_note, search_box %}
+    {% from "meta_macros.html" import comb_main_buttons,comb_archive_buttons,comb_bin_buttons%}
     <header class = "header">
-        <a href="#" id="archive-link" data-archive-url="{{ url_for('archive') }}">Archive</a>
-        <a href="#" id="bin-link" data-bin-url="{{ url_for('bin') }}">Bin</a>
+        {{ archive_link() }}
+        {{ bin_link() }}
     </header>
 
     <div id="app">
@@ -21,13 +20,7 @@
 
         {{ search_box('index', query) }}
 
-        <div id = "note_bit">
-            <form id="note_form" action="/" method="POST">
-                <textarea id="note_input" name="note" placeholder="Write a new note..."></textarea>
-                <button type="submit">Add Note</button>
-            </form>
-        </div>
-
+        
         <div id = notes_list_bit>
             {% if query %}
                 
@@ -41,14 +34,12 @@
                     {% endif %}
                     {% if search_results.archive %}
                         <h3>Archive</h3>
-                        <!-- Display Archive Search Results -->
                         {% for note in search_results.archive %}
                             {{ comb_archive_buttons(note) }}                  
                         {% endfor %}
                     {% endif %}
                     {% if search_results.bin %}
                         <h3>Bin</h3>
-                        <!-- Display Bin Search Results -->
                         {% for note in search_results.bin %}
                             {{ comb_bin_buttons(note) }}
                         {% endfor %}
@@ -59,7 +50,7 @@
                 {% endif %}
 
             {% else %}
-                <!-- Display Regular Notes -->
+                {{ new_note() }}
                 {% for note in notes %}
                     {{ comb_main_buttons(note) }}
                 {% endfor %}

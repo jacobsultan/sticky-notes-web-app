@@ -1,0 +1,47 @@
+{% macro index_link() %}
+    <a href="{{ url_for('index') }}" id="notes-link" class = "links">Notes</a>
+{% endmacro %}
+
+{% macro archive_link() %}
+    <a href="#" id="archive-link" data-archive-url="{{ url_for('archive') }}">Archive</a>
+{% endmacro %}
+
+{% macro bin_link() %}
+    <a href="#" id="bin-link" data-bin-url="{{ url_for('bin') }}">Bin</a>
+{% endmacro %}
+
+{% macro search_box(url, query) %}
+    <div id = "search_bit">
+        <form action="{{ url_for(url) }}" method="GET">
+            <input type="text" name="query" placeholder="Search notes..." value="{{ query }}">
+            <button type="submit">Search</button>
+        </form>
+    </div>
+{% endmacro %}
+
+{% macro new_note() %}
+    <div id = "note_bit">
+        <form id="note_form" action="/" method="POST">
+            <textarea id="note_input" name="note" placeholder="Write a new note..."></textarea>
+            <button type="submit">Add Note</button>
+        </form>
+    </div>
+{% endmacro %}
+
+
+{% macro head_elements() %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="{{ url_for('static', filename='script.js') }}" defer></script>
+{% endmacro %}
+
+
+{# 
+
+     
+        {% macro() %}
+    {% endmacro %}
+    
+    
+    #}

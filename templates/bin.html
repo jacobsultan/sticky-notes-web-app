@@ -3,30 +3,26 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <script src="{{ url_for('static', filename='script.js') }}" defer></script>
-    <title>Notes - Recently Deleted</title>
+    {% from "other_macros.html" import head_elements %}
+    {{ head_elements() }}
+    <title>Notes: Recently Deleted</title>
 </head>
 
 <body>
-    {% from "_macros.html" import comb_bin_buttons, search_box %}
+    {% from "button_macros.html" import empty_trash %}
+    {% from "other_macros.html" import index_link, archive_link, search_box %}
+    {% from "meta_macros.html" import comb_bin_buttons%}
     <header>
-        <a href = "{{ url_for('index')}}" id = "notes-link" class = "links">Notes</a>
-        <a href = "#" id="archive-link" data-archive-url="{{ url_for('archive') }}">Archive</a>
+        {{ index_link() }}
+        {{ archive_link() }}
     </header>
 
     <div id = "binapp">
         <h1>Recently Deleted</h1>
 
-        <div id = "deleteall">
-            <form action = "{{url_for('empty_trash')}}" method = "POST" onsubmit = "return confirmEmptyTrash()";>
-                <button type = "submit" id = "emptytrash">Empty Trash</button>
-            </form>
-        </div>
 
         {{ search_box('bin', query)}}
+
         <div id = "notes_list">
             {% if query %}
                 {% if search_results %}
@@ -39,6 +35,7 @@
                 {% endif %}
 
             {% else %}
+                {{ empty_trash() }}
                 {% for note in notes %}
                     {{ comb_bin_buttons(note) }}
                 </div>
