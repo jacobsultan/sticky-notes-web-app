@@ -1,12 +1,12 @@
 {% macro toggle_bin_button(note) %}
-    <form action="{{ url_for('toggle_bin', note_id=note.id) }}" method="POST">
-        <button type="submit" class="{{ button_class }}">{{ 'Remove from bin' if note.binned else 'Move to bin' }}</button>
+    <form action="{{ url_for('toggle_bin', note_id=note.id) }}" method="POST" >
+        <button type="submit">{{ 'Remove from bin' if note.binned else 'Move to bin' }}</button>
     </form>
 {% endmacro %}
 
 {% macro toggle_archived_button(note) %}
     <form action="{{ url_for('toggle_archived', note_id=note.id) }}" method="POST" >
-        <button type="submit" class="{{ button_class }}">{{ 'Unarchive' if note.archived else 'Archive' }}</button>
+        <button type="submit">{{ 'Unarchive' if note.archived else 'Archive' }}</button>
     </form>
 {% endmacro %}
 
@@ -31,7 +31,7 @@
     <textarea name="content">{{ note.content }}</textarea>
     <button type="submit">Save</button>
 </form>
-<button class="edit-button" data-note-id="{{ note.id }}" class = "notebutton">Edit</button>
+<button class="edit-button" data-note-id="{{ note.id }}">Edit</button>
 {% endmacro %}
 
 {% macro delete_button(note) %}
@@ -49,3 +49,8 @@
 {% endmacro %}
 
 
+{% macro cancel_search(page) %}
+    <form action="{{ url_for('cancel_search', page=page) }}" method="POST">
+        <button type="submit">Cancel Search</button>
+    </form>
+{% endmacro %}

@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-// edit button
+// edit button for listening to clicks
 document.querySelectorAll('.edit-button').forEach(button => {
     button.addEventListener('click', function() {
         const noteId = button.getAttribute('data-note-id');
@@ -19,71 +19,7 @@ document.querySelectorAll('.edit-button').forEach(button => {
     });
 });
 
-// Bin link
-document.addEventListener('DOMContentLoaded', function() {
-    const binLink = document.getElementById('bin-link');
-    const binUrl = binLink.getAttribute('data-bin-url');
-    binLink.addEventListener('click', function(e) {
-        e.preventDefault();
-        fetch('/check_bin')
-            .then(response => response.json())
-            .then(data => {
-                if (data.is_empty) {
-                    alert('Bin is empty!');
-                } else {
-                    window.location.href = binUrl;
-                }
-            })
-            .catch(error => console.error('Error:', error));
-    });
-});
-
-// Archive link
-document.addEventListener('DOMContentLoaded', function() {
-    const archiveLink = document.getElementById('archive-link');
-    const archiveUrl = archiveLink.getAttribute('data-archive-url');
-    archiveLink.addEventListener('click', function(e) {
-        e.preventDefault();
-        fetch('/check_archive')
-            .then(response => response.json())
-            .then(data => {
-                if (data.is_empty) {
-                    alert('Archive is empty!');
-                } else {
-                    window.location.href = archiveUrl;
-                }
-            })
-            .catch(error => console.error('Error:', error));
-    });
-});
-
-
-document.addEventListener('DOMContentLoaded', function() {
-    const binButton = document.getElementById('move-to-bin-button');
-    binButton.addEventListener('click', function(e) {
-        e.preventDefault();
-        
-        // Trigger form submission
-        const form = document.getElementById('move-to-bin-button');
-        form.submit();
-        
-        // After form submission, check if the archive is empty
-        fetch('/check_archive')
-            .then(response => response.json())
-            .then(data => {
-                if (data.is_empty) {
-                    window.location.href = '';
-                } else {
-                    window.location.href = 'archive';
-                }
-            })
-            .catch(error => console.error('Error:', error));
-    });
-});
-
-
-
-
+// showing the edit button form
 function toggleEditForm(noteId) {
     const form = document.getElementById(`edit-form-${noteId}`);
     if (form.style.display === "none" || form.style.display === "") {
@@ -93,6 +29,41 @@ function toggleEditForm(noteId) {
     }
 }
 
+// Bin link if empty
+document.addEventListener('DOMContentLoaded', function() {
+    const binLink = document.getElementById('bin-link');
+    binLink.addEventListener('click', function(e) {
+        fetch('/check_bin')
+            .then(response => response.json())
+            .then(data => {
+                if (data.is_empty) {
+                    e.preventDefault(); 
+                    alert('Bin is empty!');
+                }
+            })
+    });
+});
+
+// Archive Link if empty
+document.addEventListener('DOMContentLoaded', function() {
+    const archiveLink = document.getElementById('archive-link');
+    archiveLink.addEventListener('click', function(e) {
+        fetch('/check_archive')
+            .then(response => response.json())
+            .then(data => {
+                if (data.is_empty) {
+                    e.preventDefault(); // Only prevent the default behavior if the bin is empty
+                    alert('Archive is empty!');
+                }
+            })
+    });
+});
+
+
+
+
+
+
 function confirmDelete() {
     return confirm('Are you certain you want to delete this permenantly?');
 }
@@ -100,3 +71,4 @@ function confirmDelete() {
 function confirmEmptyTrash() {
     return confirm("Selecting 'Yes' will permenantly delete all notes in your bin (this is irreversible)")
 }
+

@@ -7,22 +7,26 @@
     <title>Notes: Archive</title>
 </head>
 <body>
+    {% from "button_macros.html" import cancel_search %}
     {% from "other_macros.html" import index_link, bin_link, search_box %}
     {% from "meta_macros.html" import comb_archive_buttons %}
 
-    <header class = "header">
+    <header class = "header header_archive">
         {{ index_link() }}
         {{ bin_link() }}
     </header>
 
-    <div id = "archiveapp">
+    <div class = "main_app">
         <h1>Archive</h1>
 
         {{ search_box('archive', query)}}
 
-        <div id = "notes_list">
+        <div class = "notes_list_bit">
             {% if query %}
+                {{ cancel_search('archive') }}
+
                 {% if search_results %}
+
                     <h2>Search Results for: "{{ query }}" in archive</h2>
                     {% for note in search_results %}
                         {{ comb_archive_buttons(note) }}

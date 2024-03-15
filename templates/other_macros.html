@@ -1,13 +1,13 @@
 {% macro index_link() %}
-    <a href="{{ url_for('index') }}" id="notes-link" class = "links">Notes</a>
+    <a href="{{ url_for('index') }}" class = "links">Notes</a>
 {% endmacro %}
 
 {% macro archive_link() %}
-    <a href="#" id="archive-link" data-archive-url="{{ url_for('archive') }}">Archive</a>
+    <a href="{{ url_for('archive') }}" id="archive-link">Archive</a>
 {% endmacro %}
 
 {% macro bin_link() %}
-    <a href="#" id="bin-link" data-bin-url="{{ url_for('bin') }}">Bin</a>
+    <a href="{{ url_for('bin') }}" id="bin-link" >Bin</a>
 {% endmacro %}
 
 {% macro search_box(url, query) %}

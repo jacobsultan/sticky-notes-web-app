@@ -7,24 +7,23 @@
     <title>Notes</title>
 </head>
 <body>
+    {% from "button_macros.html" import cancel_search %}
     {% from "other_macros.html" import archive_link, bin_link, new_note, search_box %}
-    {% from "meta_macros.html" import comb_main_buttons,comb_archive_buttons,comb_bin_buttons%}
-    <header class = "header">
+    {% from "meta_macros.html" import comb_main_buttons,comb_archive_buttons,comb_bin_buttons %}
+    
+    <header class = "header header_index">
         {{ archive_link() }}
         {{ bin_link() }}
     </header>
 
-    <div id="app">
-
+    <div class="main_app">
         <h1>Notes</h1>
-
-        {{ search_box('index', query) }}
-
-        
-        <div id = notes_list_bit>
+        {{ search_box('index', query) }}        
+        <div class = "notes_list_bit">
             {% if query %}
-                
+                {{ cancel_search('index') }}
                 {% if search_results.main or search_results.archive or search_results.bin %}
+                    
                     <h2>Search Results for: "{{ query }}"</h2>
                     {% if search_results.main %}
                         <h3>Main</h3>
@@ -55,6 +54,7 @@
                     {{ comb_main_buttons(note) }}
                 {% endfor %}
             {% endif %}
+
         </div>        
     </div>
 </body>
