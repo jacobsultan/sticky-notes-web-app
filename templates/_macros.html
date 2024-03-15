@@ -46,7 +46,30 @@
 {% endmacro %}
 
 {% macro delete_button(note) %}
-    <form action = "{{url_for('delete_note', note_id = note.id)}}" method = "POST" class = "note-form" onsubmit="return confirmDelete()";>
-        <button type = "submit" class = "notebutton delete-forever">Delete forever</button>
+    <form action = "{{ url_for('delete_note', note_id = note.id) }}" method = "POST" onsubmit="return confirmDelete()";>
+        <button type = "submit" >Delete forever</button>
     </form>
+{% endmacro %}
+
+{% macro comb_main_buttons(note) %}
+    <p>{{ note.content }}</p>
+    {{ edit_button(note) }}
+    {{ toggle_archived_button(note) }}
+    {{ toggle_bin_button(note) }}
+    {{ toggle_pin_button(note) }}
+    {{ display_datetime(note) }}
+{% endmacro %}
+
+{% macro comb_archive_buttons(note) %}
+    <p>{{ note.content }}</p>
+    {{ toggle_archived_button(note) }}
+    {{ toggle_bin_button(note) }}
+    {{ display_date(note) }}
+{% endmacro %}
+
+{% macro comb_bin_buttons(note) %}
+    <p>{{ note.content }}</p>
+    {{ toggle_bin_button(note) }}
+    {{ delete_button(note) }}
+    {{ display_date(note) }}
 {% endmacro %}

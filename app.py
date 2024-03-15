@@ -169,7 +169,7 @@ def edit_note(note_id):
         flash('Note content cannot be blank.', 'error')
     return redirect(ref())
 
-@app.route('/delete/<int:note_id>',methods = ["POST"])
+@app.route('/delete_note/<int:note_id>',methods = ["POST"])
 def delete_note(note_id):
     note_to_delete = Note.query.get(note_id)
     if note_to_delete:

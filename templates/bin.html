@@ -5,13 +5,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Notes - Recently Deleted</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <script src="{{ url_for('static', filename='script.js') }}" defer></script>
+    <title>Notes - Recently Deleted</title>
 </head>
 
 <body>
-    {% from "_macros.html" import toggle_bin_button,display_date, delete_button,search_box %}
+    {% from "_macros.html" import comb_bin_buttons, search_box %}
     <header>
         <a href = "{{ url_for('index')}}" id = "notes-link" class = "links">Notes</a>
         <a href = "#" id="archive-link" data-archive-url="{{ url_for('archive') }}">Archive</a>
@@ -32,10 +32,7 @@
                 {% if search_results %}
                     <h2>Search Results for: "{{ query }}" in bin</h2>
                     {% for note in search_results %}
-                        <p>{{ note.content }}</p>
-                        {{ toggle_bin_button(note) }}
-                        {{ delete_button(note) }}
-                        {{ display_date(note) }}
+                        {{ comb_bin_buttons(note) }}
                     {% endfor %}
                 {% else %}
                     <p>No results found for "{{ query }}" :&#40;</p>
@@ -43,10 +40,7 @@
 
             {% else %}
                 {% for note in notes %}
-                    <p>{{ note.content }}</p>
-                    {{ toggle_bin_button(note) }}
-                    {{ delete_button }}
-                    {{ display_date(note) }}
+                    {{ comb_bin_buttons(note) }}
                 </div>
                 {% endfor %}
             {% endif %}
@@ -54,5 +48,4 @@
         </div>
     </div>
 </body>
-
 </html>

@@ -9,7 +9,7 @@
     <script src="{{ url_for('static', filename='script.js') }}" defer></script>
 </head>
 <body>
-    {% from "_macros.html" import toggle_bin_button,toggle_archived_button,display_date,search_box %}
+    {% from "_macros.html" import comb_archive_buttons,search_box %}
 
     <header class = "header">
         <a href="{{ url_for('index') }}" id="notes-link" class = "links">Notes</a>
@@ -26,25 +26,14 @@
                 {% if search_results %}
                     <h2>Search Results for: "{{ query }}" in archive</h2>
                     {% for note in search_results %}
-                        <p>{{ note.content }}</p>
-                        {{ toggle_archived_button(note) }}
-                        {{ toggle_bin_button(note) }}
-                        {{ display_date(note) }}
+                        {{ comb_archive_buttons(note) }}
                     {% endfor %}
                 {% else %}
                     <p>No results found for "{{ query }}" :&#40;</p>
                 {% endif %}
-
             {% else %}
                 {% for note in notes %}
-                
-                <div class="note-container" id="note-{{ note.id }}">
-                    <div class = "note-content">{{ note.content }}</div>
-                    {{ toggle_archived_button(note) }}
-                    {{ toggle_bin_button(note) }}
-                    {{ display_date(note) }}
-
-                </div>
+                    {{ comb_archive_buttons(note) }}
                 {% endfor %}
             {% endif %}
         </div>
