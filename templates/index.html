@@ -27,21 +27,15 @@
                     <h2>Search Results for: "{{ query }}"</h2>
                     {% if search_results.main %}
                         <h3>Main</h3>
-                        {% for note in search_results.main %}
-                            {{ comb_main_buttons(note) }}
-                        {% endfor %}
+                        {{ comb_main_buttons(search_results.main, 'main') }}
                     {% endif %}
                     {% if search_results.archive %}
                         <h3>Archive</h3>
-                        {% for note in search_results.archive %}
-                            {{ comb_archive_buttons(note) }}                  
-                        {% endfor %}
+                        {{ comb_main_buttons(search_results.archive,'archive') }}                  
                     {% endif %}
                     {% if search_results.bin %}
                         <h3>Bin</h3>
-                        {% for note in search_results.bin %}
-                            {{ comb_bin_buttons(note) }}
-                        {% endfor %}
+                        {{ comb_main_buttons(search_results.bin,'bin') }}
                     {% endif %}
                      
                 {% else %}
@@ -50,9 +44,7 @@
 
             {% else %}
                 {{ new_note() }}
-                {% for note in notes %}
-                    {{ comb_main_buttons(note) }}
-                {% endfor %}
+                {{ comb_main_buttons(notes,'main') }}
             {% endif %}
 
         </div>        

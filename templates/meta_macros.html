@@ -1,27 +1,51 @@
 {% from "button_macros.html" import toggle_archived_button,toggle_bin_button,toggle_pin_button %}
 {% from "button_macros.html" import display_datetime,display_date,edit_button,delete_button %}
 
-{% macro comb_main_buttons(note) %}
-    <p>{{ note.content }}</p>
-    {{ edit_button(note) }}
-    {{ toggle_archived_button(note) }}
-    {{ toggle_bin_button(note) }}
-    {{ toggle_pin_button(note) }}
-    {{ display_datetime(note) }}
+{% macro comb_main_buttons(notes, type) %}
+    {% for note in notes %}
+        <p>{{ note.content }}</p>
 
-    
+        {% if type == 'main' %}
+            {{ edit_button(note) }}
+        {% endif %}
+
+        {% if type != 'bin' %}
+            {{ toggle_archived_button(note) }}
+        {% endif %}
+
+        {{ toggle_bin_button(note) }}
+
+        {% if type == 'bin' %}
+            {{ delete_button(note) }}
+        {% endif %}
+
+        {% if type == 'main' %}
+            {{ toggle_pin_button(note) }}
+            {{ display_datetime(note) }}
+
+        {% else %}
+            {{ display_date(note) }}
+        {% endif %}
+
+    {% endfor %}  
 {% endmacro %}
 
-{% macro comb_archive_buttons(note) %}
-    <p>{{ note.content }}</p>
-    {{ toggle_archived_button(note) }}
-    {{ toggle_bin_button(note) }}
-    {{ display_date(note) }}
+{% macro comb_archive_buttons(notes) %}
+    {% for note in notes %}
+        <p>{{ note.content }}</p>
+        {{ toggle_archived_button(note) }}
+        {{ toggle_bin_button(note) }}
+        {{ display_date(note) }}
+    {% endfor %}
+
 {% endmacro %}
 
-{% macro comb_bin_buttons(note) %}
-    <p>{{ note.content }}</p>
-    {{ toggle_bin_button(note) }}
-    {{ delete_button(note) }}
-    {{ display_date(note) }}
+{% macro comb_bin_buttons(notes) %}
+    {% for note in notes %}
+        <p>{{ note.content }}</p>
+        {{ toggle_bin_button(note) }}
+        {{ delete_button(note) }}
+        {{ display_date(note) }}
+    {% endfor%}
+
 {% endmacro %}

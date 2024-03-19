@@ -9,7 +9,7 @@
 <body>
     {% from "button_macros.html" import empty_trash,cancel_search %}
     {% from "other_macros.html" import index_link, archive_link, search_box %}
-    {% from "meta_macros.html" import comb_bin_buttons%}
+    {% from "meta_macros.html" import comb_bin_buttons, comb_main_buttons %}
 
     <header class = "header header_bin">
         {{ index_link() }}
@@ -26,9 +26,7 @@
                 {% if search_results %}
 
                     <h2>Search Results for: "{{ query }}" in bin</h2>
-                    {% for note in search_results %}
-                        {{ comb_bin_buttons(note) }}
-                    {% endfor %}
+                    {{ comb_main_buttons(search_results ,'bin') }}
 
                 {% else %}
                     <p>No results found for "{{ query }}" :&#40;</p>
@@ -36,10 +34,7 @@
 
             {% else %}
                 {{ empty_trash() }}
-                {% for note in notes %}
-                    {{ comb_bin_buttons(note) }}
-                </div>
-                {% endfor %}
+                {{ comb_main_buttons(notes ,'bin') }}
             {% endif %}
             </div>
         </div>

@@ -9,7 +9,7 @@
 <body>
     {% from "button_macros.html" import cancel_search %}
     {% from "other_macros.html" import index_link, bin_link, search_box %}
-    {% from "meta_macros.html" import comb_archive_buttons %}
+    {% from "meta_macros.html" import comb_main_buttons, comb_archive_buttons %}
 
     <header class = "header header_archive">
         {{ index_link() }}
@@ -28,16 +28,12 @@
                 {% if search_results %}
 
                     <h2>Search Results for: "{{ query }}" in archive</h2>
-                    {% for note in search_results %}
-                        {{ comb_archive_buttons(note) }}
-                    {% endfor %}
+                    {{ comb_main_buttons(search_results, 'archive') }}
                 {% else %}
                     <p>No results found for "{{ query }}" :&#40;</p>
                 {% endif %}
-            {% else %}
-                {% for note in notes %}
-                    {{ comb_archive_buttons(note) }}
-                {% endfor %}
+            {% else %} 
+                {{ comb_main_buttons(notes, 'archive') }}
             {% endif %}
         </div>
     </div>
