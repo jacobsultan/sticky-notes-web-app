@@ -8,13 +8,10 @@
 </head>
 <body>
     {% from "button_macros.html" import cancel_search %}
-    {% from "other_macros.html" import archive_link, bin_link, new_note, search_box %}
-    {% from "meta_macros.html" import comb_main_buttons,comb_archive_buttons,comb_bin_buttons %}
+    {% from "other_macros.html" import new_note, search_box %}
+    {% from "meta_macros.html" import render_buttons, links_bar %}
     
-    <header class = "header header_index">
-        {{ archive_link() }}
-        {{ bin_link() }}
-    </header>
+    {{ links_bar('main')}}
 
     <div class="main_app">
         <h1>Notes</h1>
@@ -27,15 +24,15 @@
                     <h2>Search Results for: "{{ query }}"</h2>
                     {% if search_results.main %}
                         <h3>Main</h3>
-                        {{ comb_main_buttons(search_results.main, 'main') }}
+                        {{ render_buttons(search_results.main, 'main') }}
                     {% endif %}
                     {% if search_results.archive %}
                         <h3>Archive</h3>
-                        {{ comb_main_buttons(search_results.archive,'archive') }}                  
+                        {{ render_buttons(search_results.archive,'archive') }}                  
                     {% endif %}
                     {% if search_results.bin %}
                         <h3>Bin</h3>
-                        {{ comb_main_buttons(search_results.bin,'bin') }}
+                        {{ render_buttons(search_results.bin,'bin') }}
                     {% endif %}
                      
                 {% else %}
@@ -44,7 +41,7 @@
 
             {% else %}
                 {{ new_note() }}
-                {{ comb_main_buttons(notes,'main') }}
+                {{ render_buttons(notes,'main') }}
             {% endif %}
 
         </div>        

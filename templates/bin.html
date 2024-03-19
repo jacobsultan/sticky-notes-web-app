@@ -8,34 +8,34 @@
 </head>
 <body>
     {% from "button_macros.html" import empty_trash,cancel_search %}
-    {% from "other_macros.html" import index_link, archive_link, search_box %}
-    {% from "meta_macros.html" import comb_bin_buttons, comb_main_buttons %}
+    {% from "other_macros.html" import search_box %}
+    {% from "meta_macros.html" import render_buttons, links_bar %}
 
-    <header class = "header header_bin">
-        {{ index_link() }}
-        {{ archive_link() }}
-    </header>
+    {{ links_bar('bin')}}
 
     <div class = "main_app">
+
         <h1>Recently Deleted</h1>
+
         {{ search_box('bin', query)}}
+
         <div class = "notes_list_bit">
             {% if query %}
+
                 {{ cancel_search('bin') }}
 
                 {% if search_results %}
-
                     <h2>Search Results for: "{{ query }}" in bin</h2>
-                    {{ comb_main_buttons(search_results ,'bin') }}
-
+                    {{ render_buttons(search_results ,'bin') }}
                 {% else %}
                     <p>No results found for "{{ query }}" :&#40;</p>
                 {% endif %}
 
             {% else %}
                 {{ empty_trash() }}
-                {{ comb_main_buttons(notes ,'bin') }}
+                {{ render_buttons(notes ,'bin') }}
             {% endif %}
+            
             </div>
         </div>
     </div>

@@ -1,7 +1,9 @@
 {% from "button_macros.html" import toggle_archived_button,toggle_bin_button,toggle_pin_button %}
 {% from "button_macros.html" import display_datetime,display_date,edit_button,delete_button %}
+{% from "other_macros.html" import archive_link, bin_link, index_link %}
 
-{% macro comb_main_buttons(notes, type) %}
+
+{% macro render_buttons(notes, type) %}
     {% for note in notes %}
         <p>{{ note.content }}</p>
 
@@ -30,22 +32,18 @@
     {% endfor %}  
 {% endmacro %}
 
-{% macro comb_archive_buttons(notes) %}
-    {% for note in notes %}
-        <p>{{ note.content }}</p>
-        {{ toggle_archived_button(note) }}
-        {{ toggle_bin_button(note) }}
-        {{ display_date(note) }}
-    {% endfor %}
 
-{% endmacro %}
-
-{% macro comb_bin_buttons(notes) %}
-    {% for note in notes %}
-        <p>{{ note.content }}</p>
-        {{ toggle_bin_button(note) }}
-        {{ delete_button(note) }}
-        {{ display_date(note) }}
-    {% endfor%}
+{% macro links_bar(page) %}
+    <header class = "header">
+        {% if page != 'main' %}
+            {{ index_link() }}
+        {% endif %}
+        {% if page != 'archive' %}
+            {{ archive_link() }}
+        {% endif %}
+        {% if page != 'bin' %}
+            {{ bin_link() }}
+        {% endif %}
+    </header>
 
 {% endmacro %}

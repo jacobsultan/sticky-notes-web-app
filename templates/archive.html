@@ -8,15 +8,13 @@
 </head>
 <body>
     {% from "button_macros.html" import cancel_search %}
-    {% from "other_macros.html" import index_link, bin_link, search_box %}
-    {% from "meta_macros.html" import comb_main_buttons, comb_archive_buttons %}
+    {% from "other_macros.html" import search_box %}
+    {% from "meta_macros.html" import render_buttons, links_bar %}
 
-    <header class = "header header_archive">
-        {{ index_link() }}
-        {{ bin_link() }}
-    </header>
-
+    {{ links_bar('archive') }}
+        
     <div class = "main_app">
+        
         <h1>Archive</h1>
 
         {{ search_box('archive', query)}}
@@ -26,14 +24,13 @@
                 {{ cancel_search('archive') }}
 
                 {% if search_results %}
-
                     <h2>Search Results for: "{{ query }}" in archive</h2>
-                    {{ comb_main_buttons(search_results, 'archive') }}
+                    {{ render_buttons(search_results, 'archive') }}
                 {% else %}
                     <p>No results found for "{{ query }}" :&#40;</p>
                 {% endif %}
             {% else %} 
-                {{ comb_main_buttons(notes, 'archive') }}
+                {{ render_buttons(notes, 'archive') }}
             {% endif %}
         </div>
     </div>

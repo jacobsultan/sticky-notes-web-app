@@ -32,13 +32,14 @@ def index():
             db.session.commit()
         return redirect(url_for('index')) #preventative measure for resubmitting 
     ordered_notes = Note.query.filter_by(archived=False, binned=False).order_by(Note.pinned.desc(), Note.date.desc()).all()
-    search_results = {}
+    search_results = {'main': [], 'archive': [], 'bin': []}
     query = request.args.get('query', '')
     if query:
         search_results['main'] = Note.query.filter(Note.content.ilike(f'%{query}%'), Note.archived==False, Note.binned==False).order_by(Note.pinned.desc(),Note.date.desc()).all()
         search_results['archive'] = Note.query.filter(Note.content.ilike(f'%{query}%'), Note.archived==True, Note.binned==False).order_by(Note.pinned.desc(),Note.date.desc()).all()
         search_results['bin'] = Note.query.filter(Note.content.ilike(f'%{query}%'), Note.binned==True).order_by(Note.pinned.desc(),Note.date.desc()).all()
     return render_template('index.html', notes=ordered_notes, search_results=search_results, query=query)
+
 
 @app.route('/archive',methods=['GET'])
 def archive():
