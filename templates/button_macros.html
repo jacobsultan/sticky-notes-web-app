@@ -77,7 +77,10 @@
 
 
 {% macro cancel_search(page) %}
-    <form action="{{ url_for('cancel_search', page=page) }}" method="POST">
-        <button type="submit" class = "cancel_search">Cancel Search</button>
-    </form>
+    <div class = "cancel_search">
+        <form action="{{ url_for('cancel_search', page=page) }}" method="POST">
+            <button type="submit" class = "cancel_search">Cancel Search</button>
+        </form>
+    </div>
+    
 {% endmacro %}

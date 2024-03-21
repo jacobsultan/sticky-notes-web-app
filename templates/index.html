@@ -3,27 +3,30 @@
 <html lang="en">
 <head>
     {% from "other_macros.html" import head_elements %}
-    <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
     {{ head_elements() }}
     <title>Notes</title>
 </head>
 <body>
     {% from "button_macros.html" import cancel_search %}
-    {% from "other_macros.html" import new_note, search_box %}
-    {% from "meta_macros.html" import render_notes, links_bar %}
+    {% from "other_macros.html" import new_note %}
+    {% from "meta_macros.html" import render_notes, links_bar,search_box %}
     
 
     <div class="header_bar">
         {{ links_bar('main')}}
         <h1 class = "title" >Notes</h1>
-        {{ search_box('index', query) }}        
+        {{ search_box('index', query)}}
+                
+            
+
+        </div>
     </div>
 
 
     <main class="main_app">
         <div class = "notes_list">
             {% if query %}
-                {{ cancel_search('index') }}
+                
                 {% if search_results.main or search_results.archive or search_results.bin %}
                     
                     <h2 class = "search_results">Search Results for: "{{ query }}"</h2>

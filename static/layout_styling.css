@@ -41,4 +41,10 @@ body {
     max-height: 9rem;
 }
 
-
+.search_box{
+    display:flex;
+    flex-direction: column;
+}
+.cancel_search{
+    margin-left: auto;
+}

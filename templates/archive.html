@@ -8,14 +8,12 @@
 </head>
 <body>
     {% from "button_macros.html" import cancel_search %}
-    {% from "other_macros.html" import search_box %}
-    {% from "meta_macros.html" import render_notes, links_bar %}
+    {% from "meta_macros.html" import render_notes, links_bar,search_box %}
 
     <div class="header_bar">
         {{ links_bar('archive') }}
         <h1 class = "title">Archive</h1>
         {{ search_box('archive', query)}}
-
     </div>
     
         
@@ -25,7 +23,7 @@
 
         <div class = "notes_list">
             {% if query %}
-                {{ cancel_search('archive') }}
+                
 
                 {% if search_results %}
                     <h2 class = "search_results">Search Results for: "{{ query }}" in archive</h2>

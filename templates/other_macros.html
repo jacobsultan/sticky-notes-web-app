@@ -10,14 +10,7 @@
     <a href="{{ url_for('bin') }}" id = 'bin-link' class ="links" >Bin</a>
 {% endmacro %}
 
-{% macro search_box(url, query) %}
-    <div class = "search_box">
-        <form action="{{ url_for(url) }}" method="GET">
-            <input type="text" name="query" placeholder="Search notes..." value="{{ query }}" maxlength = "1000">
-            <button type="submit">Search</button>
-        </form>
-    </div>
-{% endmacro %}
+
 
 {% macro new_note() %}
     <div class = "new_note">
@@ -35,5 +28,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename = 'layout_styling.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename = 'notes_styling.css') }}">
     <script src="{{ url_for('static', filename='script.js') }}" defer></script>
+    <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
+
 {% endmacro %}
 

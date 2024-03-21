@@ -102,11 +102,13 @@ function resizeTextarea() {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-  var masonryContainer = document.querySelector('.masonry-container');
-  var masonry = new Masonry(masonryContainer, {
-    itemSelector: '.masonry-item',
-    columnWidth: '.masonry-item',
-    gutter: 10,
-    percentPosition: true
+    var masonryContainers = document.querySelectorAll('.notes-grid');
+    masonryContainers.forEach(function(container) {
+      var masonry = new Masonry(container, {
+        itemSelector: '.masonry-item',
+        columnWidth: '.masonry-item',
+        gutter: 10,
+        percentPosition: true
+      });
+    });
   });
-});
