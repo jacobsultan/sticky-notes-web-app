@@ -1,10 +1,11 @@
+<!-- -->
 <!-- templates/index.html -->
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"> 
 <head>
-    {% from "other_macros.html" import head_elements %}
-    {{ head_elements() }}
-    <title>Notes</title>
+    {% from "other_macros.html" import head_elements %}<!-- macros have to be in the right section(head)-->
+    {{ head_elements() }} <!-- sets character encoding, links stylesheets, JS and masonry library -->
+    <title>Notes</title> <!-- Title for browser not on mainsheet -->
 </head>
 <body>
     {% from "button_macros.html" import cancel_search %}
@@ -13,13 +14,9 @@
     
 
     <div class="header_bar">
-        {{ links_bar('main')}}
-        <h1 class = "title" >Notes</h1>
-        {{ search('index', query)}}
-                
-            
-
-        </div>
+        {{ links_bar('main')}} <!-- Archive and Bin macros -->
+        <h1 class = "title" >Notes</h1> <!-- Main title for page -->
+        {{ search('index', query)}} <!-- contains both search box and cancel search, query being the input-->
     </div>
 
 

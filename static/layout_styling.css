@@ -9,17 +9,21 @@ body {
     border-bottom: 0.1rem solid black;
     padding: 1rem 0 2rem 0;
     margin-bottom: 1rem;
-
 }
 
 .links {
     font-size:2rem;
     margin-left: 3rem;
+    color:rgb(25, 17, 65);
+    text-decoration: none;
 
+}
+
+.links:hover{
+    color:rgb(20, 0, 132) ;
 }
 .search_box {
     margin-right:3rem;
-
 }
 .title {
     font-size:2rem;
@@ -47,4 +51,22 @@ body {
 }
 .cancel_search{
     margin-left: auto;
+    cursor: pointer; 
+
 }
+
+.deleteall{
+    display: grid;
+    place-items: center;
+    margin-bottom:1rem;
+    
+}
+.empty_trash{
+    /* Set width and height to make the button bigger */
+    height:3rem;
+    width: 10rem;
+    font-size: 150%;
+    cursor: pointer; 
+    background-color: rgba(165, 42, 42, 0.276);
+}
+

@@ -1,6 +1,7 @@
 .notes-grid {
     margin: 0 auto;
 }
+
   
 .note-container {
     border: 0.2rem solid white;
@@ -30,6 +31,7 @@
     flex-direction: column; 
     align-items: flex-end; 
     margin-top: auto;
+    
 }
   
 .note-date {
@@ -45,10 +47,12 @@
 .note-buttons {
     display: flex;
     justify-content: flex-end;
+    
 }
 
 .note-buttons button {
     margin-left: 0.5rem;
+
 }
 
 .pin-button {
@@ -59,4 +63,8 @@
 .pin-button img {
     width: 1.5rem; 
     height: auto; 
+}
+
+button {
+    cursor: pointer; 
 }
