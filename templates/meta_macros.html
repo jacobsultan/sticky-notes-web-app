@@ -2,52 +2,43 @@
 {% from "button_macros.html" import display_datetime,display_date,edit_button,delete_button %}
 {% from "other_macros.html" import archive_link, bin_link, index_link %}
 
-
 {% macro render_notes(notes, type) %}
-    <div class="notes_grid">
-        {% for note in notes %}
-            <div class="note_container">
-                <div class="note_content">
-                    <p>{{ note.content }}</p>
-                </div>
-
-                {% if type == 'main' %}
-                    <div class="pin_button">
-                        {{ toggle_pin_button(note) }}
-                    </div>
-                {% endif %}
-
-                <div class="note_extras">
-                    <div class="note_date">
-                        {% if type == 'main' %}
-                            {{ display_datetime(note) }}
-                        {% else %}
-                            {{ display_date(note) }}
-                        {% endif %}
-                    </div>
-
-                    <div class="note_buttons">
-                        {% if type == 'main' %}
-                            {{ edit_button(note) }}
-                        {% endif %}
-
-                        {% if type != 'bin' %}
-                            {{ toggle_archived_button(note) }}
-                        {% endif %}
-
-                        {{ toggle_bin_button(note) }}
-
-                        {% if type == 'bin' %}
-                            {{ delete_button(note) }}
-                        {% endif %}
-                    </div>
-                </div>
-            </div>
-        {% endfor %}
+<div class="notes-grid masonry-container">
+  {% for note in notes %}
+  <div class="note-container masonry-item">
+    <div class="note-content">
+      <p>{{ note.content }}</p>
     </div>
+    {% if type == 'main' %}
+    <div class="pin-button">
+      {{ toggle_pin_button(note) }}
+    </div>
+    {% endif %}
+    <div class="note-extras">
+      <div class="note-date">
+        {% if type == 'main' %}
+        {{ display_datetime(note) }}
+        {% else %}
+        {{ display_date(note) }}
+        {% endif %}
+      </div>
+      <div class="note-buttons">
+        {% if type == 'main' %}
+        {{ edit_button(note) }}
+        {% endif %}
+        {% if type != 'bin' %}
+        {{ toggle_archived_button(note) }}
+        {% endif %}
+        {{ toggle_bin_button(note) }}
+        {% if type == 'bin' %}
+        {{ delete_button(note) }}
+        {% endif %}
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
 {% endmacro %}
-
-
 
 {% macro links_bar(page) %}
     <header class = "header">

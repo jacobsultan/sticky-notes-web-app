@@ -82,3 +82,13 @@ function resizeTextarea() {
     textarea.style.height = 'auto'; // Reset height to auto to calculate new height
     textarea.style.height = textarea.scrollHeight + 'px'; // Set the new height based on content
 }
+
+document.addEventListener('DOMContentLoaded', function() {
+    var masonryContainer = document.querySelector('.masonry-container');
+    var masonry = new Masonry(masonryContainer, {
+      itemSelector: '.masonry-item',
+      columnWidth: '.masonry-item',
+      gutter: 10,
+      percentPosition: true
+    });
+  });

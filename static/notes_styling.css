@@ -1,40 +1,38 @@
-.notes_grid {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
+.notes-grid {
+    margin: 0 auto;
 }
   
-.note_container {
+.note-container {
     border: 0.2rem solid white;
     padding: 0.5rem;
-    display: inline-block;
-    min-width: 13rem;
-    max-width: 20rem;
-    position: relative;
-    height:auto;
-    border-radius: 1rem;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-
-
-}
-  
-.note_content {
-    margin-right: 2.5rem;
-    word-wrap: break-word;
-
-}
-
-
-
-
-.note_extras {
     display: flex;
     flex-direction: column;
-    align-items: flex-end;
+    min-width: 13rem;
+    max-width:20rem;
+    width: calc(33.33% - 10px);
+    position: relative;
+    height: auto;
+    border-radius: 1rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 10px;
+}
+
+
+  
+.note-content {
+    margin-right: 2rem;
+    word-wrap: break-word;
+    flex-grow: 1;
+}
+  
+.note-extras {
+    display: flex; 
+    flex-direction: column; 
+    align-items: flex-end; 
     margin-top: auto;
 }
   
-.note_date {
+.note-date {
     font-size: 0.7rem;
     color: rgb(0, 0, 0, 0.7);
     margin-bottom: 0.5rem;
@@ -44,40 +42,21 @@
     max-width: 100%;
 }
   
-.note_buttons {
+.note-buttons {
     display: flex;
-}
-  
-.note_buttons button {
-    margin-right: 0.5rem;
-}
-  
-
-
-.note_container.expanded {
-    min-width: 25rem;
-    max-width: 25rem;
+    justify-content: flex-end;
 }
 
-
-.no_results {
-    word-wrap: break-word; /* For older browsers */
-    overflow-wrap: break-word; /* For modern browsers */
+.note-buttons button {
+    margin-left: 0.5rem;
 }
 
-.pin_button {
+.pin-button {
     position: absolute;
     top: 0.5rem;
     right: 0.5rem;
 }
-.toggle_pin_button {
-    background: none;
-    border: none;
-    padding: 0;
-    cursor: pointer;
-}
-
-.toggle_pin_button img {
-    width: 20px;
-    height: 20px;
+.pin-button img {
+    width: 1.5rem; 
+    height: auto; 
 }
