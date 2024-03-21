@@ -32,3 +32,10 @@
 
 {% endmacro %}
 
+{% macro search_box(url, query) %}
+    <form action="{{ url_for(url) }}" method="GET">
+        <input type="text" name="query" placeholder="Search notes..." value="{{ query }}" maxlength = "1000">
+        <button type="submit">Search</button>
+    </form>
+{% endmacro %}
+

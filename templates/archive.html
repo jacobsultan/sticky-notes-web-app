@@ -8,12 +8,12 @@
 </head>
 <body>
     {% from "button_macros.html" import cancel_search %}
-    {% from "meta_macros.html" import render_notes, links_bar,search_box %}
+    {% from "meta_macros.html" import render_notes, links_bar,search %}
 
     <div class="header_bar">
         {{ links_bar('archive') }}
         <h1 class = "title">Archive</h1>
-        {{ search_box('archive', query)}}
+        {{ search('archive', query)}}
     </div>
     
         

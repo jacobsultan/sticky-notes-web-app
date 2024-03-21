@@ -1,6 +1,6 @@
 {% from "button_macros.html" import toggle_archived_button,toggle_bin_button,toggle_pin_button %}
 {% from "button_macros.html" import display_datetime,display_date,edit_button,delete_button,cancel_search,search_button %}
-{% from "other_macros.html" import archive_link, bin_link, index_link %}
+{% from "other_macros.html" import archive_link, bin_link, index_link,search_box %}
 
 {% macro render_notes(notes, type) %}
 <div class="notes-grid masonry-container-{{ type }}">
@@ -55,15 +55,11 @@
 
 {% endmacro %}
 
-{% macro search_box(url, query) %}
+{% macro search(url, query) %}
     <div class = "search_box">
-        <form action="{{ url_for(url) }}" method="GET">
-            <input type="text" name="query" placeholder="Search notes..." value="{{ query }}" maxlength = "1000">
-            <button type="submit">Search</button>
-        </form>
-        
-        {{ cancel_search(url)}} 
-           
-
+        {{ search_box(url, query)}}
+        {% if query %}
+            {{ cancel_search(url)}} 
+        {% endif %}
     </div>
 {% endmacro %}

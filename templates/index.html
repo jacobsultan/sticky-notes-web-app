@@ -9,13 +9,13 @@
 <body>
     {% from "button_macros.html" import cancel_search %}
     {% from "other_macros.html" import new_note %}
-    {% from "meta_macros.html" import render_notes, links_bar,search_box %}
+    {% from "meta_macros.html" import render_notes, links_bar,search %}
     
 
     <div class="header_bar">
         {{ links_bar('main')}}
         <h1 class = "title" >Notes</h1>
-        {{ search_box('index', query)}}
+        {{ search('index', query)}}
                 
             
 
