@@ -13,15 +13,15 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-// edit button for listening to clicks
 document.querySelectorAll('.edit-button').forEach(button => {
     button.addEventListener('click', function() {
         const noteId = button.getAttribute('data-note-id');
         toggleEditForm(noteId);
+        adjustNotePositions(noteId); // Call the function to adjust note positions
     });
 });
 
-// showing the edit button form
+// Showing the edit button form
 function toggleEditForm(noteId) {
     const form = document.getElementById(`edit-form-${noteId}`);
     if (form.style.display === "none" || form.style.display === "") {
@@ -30,6 +30,24 @@ function toggleEditForm(noteId) {
         form.style.display = "none";
     }
 }
+
+// Function to adjust note positions
+function adjustNotePositions(noteId) {
+    const form = document.getElementById(`edit-form-${noteId}`);
+    const formHeight = form.offsetHeight;
+    const notesBelow = document.querySelectorAll(`.note-container:not(#edit-form-${noteId})`);
+
+    notesBelow.forEach(note => {
+        const noteTop = note.offsetTop;
+        const noteHeight = note.offsetHeight;
+
+        if (noteTop >= form.offsetTop && noteTop < form.offsetTop + formHeight) {
+            const newTop = noteTop + formHeight;
+            note.style.top = `${newTop}px`;
+        }
+    });
+}
+
 
 // Bin link if empty
 document.addEventListener('DOMContentLoaded', function() {
@@ -84,11 +102,11 @@ function resizeTextarea() {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-    var masonryContainer = document.querySelector('.masonry-container');
-    var masonry = new Masonry(masonryContainer, {
-      itemSelector: '.masonry-item',
-      columnWidth: '.masonry-item',
-      gutter: 10,
-      percentPosition: true
-    });
+  var masonryContainer = document.querySelector('.masonry-container');
+  var masonry = new Masonry(masonryContainer, {
+    itemSelector: '.masonry-item',
+    columnWidth: '.masonry-item',
+    gutter: 10,
+    percentPosition: true
   });
+});
