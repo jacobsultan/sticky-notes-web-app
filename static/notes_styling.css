@@ -52,13 +52,32 @@
     margin-right: 0.5rem;
 }
   
+
+
+.note_container.expanded {
+    min-width: 25rem;
+    max-width: 25rem;
+}
+
+
+.no_results {
+    word-wrap: break-word; /* For older browsers */
+    overflow-wrap: break-word; /* For modern browsers */
+}
+
 .pin_button {
     position: absolute;
     top: 0.5rem;
     right: 0.5rem;
 }
+.toggle_pin_button {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+}
 
-.note_container.expanded {
-    min-width: 25rem;
-    max-width: 25rem;
+.toggle_pin_button img {
+    width: 20px;
+    height: 20px;
 }
