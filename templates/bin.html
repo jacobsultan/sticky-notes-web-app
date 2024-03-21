@@ -4,40 +4,43 @@
 <head>
     {% from "other_macros.html" import head_elements %}
     {{ head_elements() }}
-    <title>Notes: Recently Deleted</title>
+    <title>Notes: <i>Recently Deleted</i></title>
 </head>
 <body>
     {% from "button_macros.html" import empty_trash,cancel_search %}
     {% from "other_macros.html" import search_box %}
-    {% from "meta_macros.html" import render_buttons, links_bar %}
+    {% from "meta_macros.html" import render_notes, links_bar %}
 
-    {{ links_bar('bin')}}
-
-    <div class = "main_app">
-
-        <h1>Recently Deleted</h1>
-
+    <div class = "header_bar">
+        {{ links_bar('bin')}}
+        <h1 class = "title">Recently Deleted</h1>
         {{ search_box('bin', query)}}
 
-        <div class = "notes_list_bit">
+    </div>
+    
+
+    <main class = "main_app">
+
+
+        <div class = "notes_list">
             {% if query %}
 
                 {{ cancel_search('bin') }}
 
                 {% if search_results %}
-                    <h2>Search Results for: "{{ query }}" in bin</h2>
-                    {{ render_buttons(search_results ,'bin') }}
+                    <h2 class = "search_results_title">Search Results for: "{{ query }}" in bin</h2>
+                    {{ render_notes(search_results,'bin') }}
                 {% else %}
-                    <p>No results found for "{{ query }}" :&#40;</p>
+                    <p class = "no_results">No results found for "{{ query }}" :&#40;</p>
                 {% endif %}
 
             {% else %}
                 {{ empty_trash() }}
-                {{ render_buttons(notes ,'bin') }}
+                {{ render_notes(notes ,'bin') }}
             {% endif %}
-            
+
             </div>
         </div>
-    </div>
+    </main>
 </body>
 </html>

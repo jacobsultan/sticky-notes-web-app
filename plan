@@ -1,4 +1,4 @@
-Makes a Notes app
+Makes a Notes app - source venv/bin/activate
 
 features:
 * write a note 
@@ -19,6 +19,13 @@ features:
 * attachments
 * Tags
 
+
+* pin a note to the top of the sheet
+* max character count for notes
+* pin note in corner
+* edit within note
+* make pins go to a seperate section
+* Write unit test
 
 
 

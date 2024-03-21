@@ -17,21 +17,24 @@
 {% endmacro %}
 
 {% macro display_datetime(note) %}
-    <div>Last updated:</div>
-    <div class="note-date">{{ note.date.strftime('%d-%m-%Y %H:%M') }}</div>
+    <div>Last updated: {{ note.date.strftime('%d-%m-%Y %H:%M') }}</div>
 {% endmacro %}
 
 {% macro display_date(note) %}
-    <div>Last updated:</div>
-    <div class="note-date">{{ note.date.strftime('%d-%m-%Y') }}</div>
+    <div>Last updated: {{ note.date.strftime('%d-%m-%Y') }}</div>
 {% endmacro %}
 
+
 {% macro edit_button(note) %}
-<form action="{{ url_for('edit_note', note_id=note.id) }}" method="POST" style="display: none;" id="edit-form-{{ note.id }}" class="note-form">
-    <textarea name="content">{{ note.content }}</textarea>
-    <button type="submit">Save</button>
-</form>
-<button class="edit-button" data-note-id="{{ note.id }}">Edit</button>
+<div class="edit_note_container">
+    <form action="{{ url_for('edit_note', note_id=note.id) }}" method="POST" style="display: none;" id="edit-form-{{ note.id }}" class="note-form">
+        <textarea name="content">{{ note.content }}</textarea>
+        <div class="edit-buttons">
+            <button type="submit">Save</button>
+        </div>
+    </form>
+    <button class="edit-button" data-note-id="{{ note.id }}">Edit</button>
+</div>
 {% endmacro %}
 
 {% macro delete_button(note) %}
@@ -41,9 +44,9 @@
 {% endmacro %}
 
 {% macro empty_trash() %}
-    <div id = "deleteall">
+    <div class = "deleteall">
         <form action = "{{url_for('empty_trash')}}" method = "POST" onsubmit = "return confirmEmptyTrash()";>
-            <button type = "submit" id = "emptytrash">Empty Trash</button>
+            <button type = "submit" class = "empty_trash">Empty Trash</button>
         </form>
     </div>
 {% endmacro %}
@@ -51,6 +54,6 @@
 
 {% macro cancel_search(page) %}
     <form action="{{ url_for('cancel_search', page=page) }}" method="POST">
-        <button type="submit">Cancel Search</button>
+        <button type="submit" class = "cancel_search">Cancel Search</button>
     </form>
 {% endmacro %}

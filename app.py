@@ -141,6 +141,3 @@ def check_archive():
         return jsonify({"is_empty": True})
     else:
         return jsonify({"is_empty": False})
-
-import os
-print("Current working directory:", os.getcwd())

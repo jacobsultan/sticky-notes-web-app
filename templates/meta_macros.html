@@ -3,34 +3,50 @@
 {% from "other_macros.html" import archive_link, bin_link, index_link %}
 
 
-{% macro render_buttons(notes, type) %}
-    {% for note in notes %}
-        <p>{{ note.content }}</p>
+{% macro render_notes(notes, type) %}
+    <div class="notes_grid">
+        {% for note in notes %}
+            <div class="note_container">
+                <div class="note_content">
+                    <p>{{ note.content }}</p>
+                </div>
 
-        {% if type == 'main' %}
-            {{ edit_button(note) }}
-        {% endif %}
+                {% if type == 'main' %}
+                    <div class="pin_button">
+                        {{ toggle_pin_button(note) }}
+                    </div>
+                {% endif %}
 
-        {% if type != 'bin' %}
-            {{ toggle_archived_button(note) }}
-        {% endif %}
+                <div class="note_extras">
+                    <div class="note_date">
+                        {% if type == 'main' %}
+                            {{ display_datetime(note) }}
+                        {% else %}
+                            {{ display_date(note) }}
+                        {% endif %}
+                    </div>
 
-        {{ toggle_bin_button(note) }}
+                    <div class="note_buttons">
+                        {% if type == 'main' %}
+                            {{ edit_button(note) }}
+                        {% endif %}
 
-        {% if type == 'bin' %}
-            {{ delete_button(note) }}
-        {% endif %}
+                        {% if type != 'bin' %}
+                            {{ toggle_archived_button(note) }}
+                        {% endif %}
 
-        {% if type == 'main' %}
-            {{ toggle_pin_button(note) }}
-            {{ display_datetime(note) }}
+                        {{ toggle_bin_button(note) }}
 
-        {% else %}
-            {{ display_date(note) }}
-        {% endif %}
-
-    {% endfor %}  
+                        {% if type == 'bin' %}
+                            {{ delete_button(note) }}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
 {% endmacro %}
+
 
 
 {% macro links_bar(page) %}

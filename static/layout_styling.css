@@ -1,0 +1,45 @@
+body {
+    background-color:rgba(42, 30, 28, 0.817);
+}
+
+.header_bar {
+    display:flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 0.1rem solid black;
+    padding: 1rem 0 2rem 0;
+    margin-bottom: 1rem;
+
+}
+
+.links {
+    font-size:2rem;
+    margin-left: 3rem;
+
+}
+.search_box {
+    margin-right:3rem;
+
+}
+.title {
+    font-size:2rem;
+    margin:0;
+}
+.new_note {
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom:2rem;
+
+}
+
+#expandingTextarea {
+    resize: none; 
+    overflow: hidden;
+    width: 100%;
+    min-height: 3rem;
+    max-height: 9rem;
+    padding: 1rem;
+}
+
+

@@ -9,42 +9,47 @@
 <body>
     {% from "button_macros.html" import cancel_search %}
     {% from "other_macros.html" import new_note, search_box %}
-    {% from "meta_macros.html" import render_buttons, links_bar %}
+    {% from "meta_macros.html" import render_notes, links_bar %}
     
-    {{ links_bar('main')}}
 
-    <div class="main_app">
-        <h1>Notes</h1>
+    <div class="header_bar">
+        {{ links_bar('main')}}
+        <h1 class = "title" >Notes</h1>
         {{ search_box('index', query) }}        
-        <div class = "notes_list_bit">
+    </div>
+
+
+    <main class="main_app">
+        <div class = "notes_list">
             {% if query %}
                 {{ cancel_search('index') }}
                 {% if search_results.main or search_results.archive or search_results.bin %}
                     
-                    <h2>Search Results for: "{{ query }}"</h2>
+                    <h2 class = "search_results">Search Results for: "{{ query }}"</h2>
                     {% if search_results.main %}
                         <h3>Main</h3>
-                        {{ render_buttons(search_results.main, 'main') }}
+                        {{ render_notes(search_results.main, 'main') }}
                     {% endif %}
                     {% if search_results.archive %}
                         <h3>Archive</h3>
-                        {{ render_buttons(search_results.archive,'archive') }}                  
+                        {{ render_notes(search_results.archive,'archive') }}                  
                     {% endif %}
                     {% if search_results.bin %}
                         <h3>Bin</h3>
-                        {{ render_buttons(search_results.bin,'bin') }}
+                        {{ render_notes(search_results.bin,'bin') }}
                     {% endif %}
                      
                 {% else %}
-                    <p>No results found for "{{ query }}" :&#40;</p>
+                    <p class = "no_results">No results found for "{{ query }}" :&#40;</p>
                 {% endif %}
 
             {% else %}
                 {{ new_note() }}
-                {{ render_buttons(notes,'main') }}
+                {{ render_notes(notes,'main') }}
             {% endif %}
-
         </div>        
-    </div>
+    </main>
 </body>
 </html>
+
+
