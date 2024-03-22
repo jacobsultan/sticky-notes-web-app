@@ -62,9 +62,8 @@
 {% endmacro %}
 
 {% macro delete_button(note) %}
-    <form action = "{{ url_for('delete_note', note_id = note.id) }}" method = "POST" onsubmit="return confirmDelete()";>
-        <button type = "submit" >Delete forever</button>
-    </form>
+    <button onclick="deleteNote('{{ note.id }}')">Delete Forever</button>
+
 {% endmacro %}
 
 {% macro empty_trash() %}

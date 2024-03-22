@@ -54,7 +54,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const binLink = document.getElementById('bin-link');
     if (binLink){
         binLink.addEventListener('click', function(e) {
-            fetch('/check_bin')
+            fetch('/check-bin')
                 .then(response => response.json())
                 .then(data => {
                     if (data.is_empty) {
@@ -71,7 +71,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const archiveLink = document.getElementById('archive-link');
     if (archiveLink){
         archiveLink.addEventListener('click', function(e) {
-            fetch('/check_archive')
+            fetch('/check-archive')
                 .then(response => response.json())
                 .then(data => {
                     if (data.is_empty) {
@@ -87,7 +87,25 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 function confirmDelete() {
-    return confirm('Are you certain you want to delete this permenantly?');
+    return confirm('Are you certain you want to delete this permanently?');
+}
+
+function deleteNote(noteId) {
+    if (confirmDelete()) {
+        fetch(`/note/${noteId}/delete-note/`, { method: 'DELETE' })
+            .then(response => {
+                if (response.ok) {
+                    // Reload the page or update the UI as needed
+                    location.reload();
+                } else {
+                    alert('Failed to delete the note.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred while deleting the note.');
+            });
+    }
 }
 
 function confirmEmptyTrash() {

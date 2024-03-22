@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for,flash, jsonify
+from flask import Flask, render_template, request, redirect, url_for, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 
@@ -67,14 +67,15 @@ def bin():
 
 
 
-@app.route('/toggle_pin/<int:note_id>', methods=['POST'])
+@app.route('/note/<int:note_id>/toggle-pin', methods=['POST'])
 def toggle_pin(note_id):
     note = Note.query.get(note_id)
     note.pinned = not note.pinned  # Toggle pin status
     db.session.commit()
     return redirect(request.headers.get("Referer"))
 
-@app.route('/toggle_bin/<int:note_id>',methods = ["POST"])
+
+@app.route('/note/<int:note_id>/toggle-bin',methods = ["POST"]) 
 def toggle_bin(note_id):
     note = Note.query.get(note_id)
     note.binned = not note.binned
@@ -82,14 +83,14 @@ def toggle_bin(note_id):
     db.session.commit()
     return redirect(request.headers.get("Referer"))
 
-@app.route('/toggle_archived/<int:note_id>',methods = ["POST"])
+@app.route('/note/<int:note_id>/toggle-archived',methods = ["POST"])
 def toggle_archived(note_id):
     note = Note.query.get(note_id)
     note.archived = not note.archived
     db.session.commit()
     return redirect(request.headers.get("Referer"))  
 
-@app.route('/edit/<int:note_id>', methods=['POST'])
+@app.route('/note/<int:note_id>/edit', methods=['POST']) 
 def edit_note(note_id):
     note = Note.query.get(note_id)
     edited_content = request.form['content']
@@ -99,35 +100,30 @@ def edit_note(note_id):
         db.session.commit()
         return redirect(request.headers.get("Referer"))
 
-@app.route('/delete_note/<int:note_id>',methods = ["POST"])
+@app.route('/note/<int:note_id>/delete-note/', methods=["DELETE"])
 def delete_note(note_id):
     note_to_delete = Note.query.get(note_id)
     if note_to_delete:
         db.session.delete(note_to_delete)
         db.session.commit()
-        return redirect(request.headers.get("Referer"))
+        return '', 204  # Return an empty response with a 204 status code
 
-@app.route('/cancel_search/<string:page>', methods=['POST'])
+@app.route('/<string:page>/cancel-search', methods=['GET'])
 def cancel_search(page):
-    # Ensure that 'page' is a valid endpoint before redirecting
-
-    return redirect(url_for(page))  # Default redirect if 'page' is not valid
+    return redirect(url_for(page))  
 
 
 
-@app.route('/empty_trash/', methods = ["POST"])
+@app.route('/empty-trash', methods = ["POST"])
 def empty_trash():
     notes_to_delete = Note.query.filter_by(binned=True).all()
     for note in notes_to_delete:
         db.session.delete(note)
     db.session.commit()
     return redirect(url_for('index'))
-    
-if __name__ == '__main__':
-    app.run(debug=True)
 
 
-@app.route('/check_bin')
+@app.route('/check-bin', methods = ['GET','POST'])
 def check_bin():
     if Note.query.filter_by(binned = True).count() == 0:
         return jsonify({"is_empty": True})
@@ -135,9 +131,15 @@ def check_bin():
         return jsonify({"is_empty": False})
     
 
-@app.route('/check_archive')
+@app.route('/check-archive',methods = ['GET'])
 def check_archive():
     if Note.query.filter_by(archived = True).count() == 0:
         return jsonify({"is_empty": True})
     else:
         return jsonify({"is_empty": False})
+
+    
+if __name__ == '__main__':
+    app.run(debug=True)
+
+
