@@ -1,20 +1,21 @@
-{% macro toggle_bin_button(note) %}
-    <form action="{{ url_for('toggle_bin', note_id=note.id) }}" method="POST" >
+<!-- Changed to state.value from enum, adds or removes item from bin state -->
+{% macro toggle_bin_button(note) %} 
+    <form action="{{ url_for('toggle_bin', note_id=note.id) }}" method="POST" > <!--flask route with input note.id -->
         <button type="submit">
-            {% if note.state.value == 3 %}
+            {% if note.state.value == 3 %} <!-- bin state -->
                 Remove from bin
             {% else %}
                 Move to bin
             {% endif %}
-
         </button>
     </form>
 {% endmacro %}
 
-{% macro toggle_archived_button(note) %}
+<!-- adds of removes items from archive state -->
+{% macro toggle_archived_button(note) %} 
     <form action="{{ url_for('toggle_archived', note_id=note.id) }}" method="POST" >
         <button type="submit">
-            {% if note.state.value == 2 %}
+            {% if note.state.value == 2 %} <!-- Archive state -->
                 Remove from Archive
             {% else %}
                 Archive
@@ -25,11 +26,11 @@
 
 
 
-
+<!-- pins or unpins a certain note with changing images based on state and hover --> 
 {% macro toggle_pin_button(note, button_class="toggle_pin_button") %}
-    <form action="{{ url_for('toggle_pin', note_id=note.id) }}" method="POST">
-        <button type="submit" class="{{ button_class }}"
-         style="background: none; border: none; padding: 0; cursor: pointer;">
+    <form action="{{ url_for('toggle_pin', note_id=note.id) }}" method="POST"> 
+        <button type="submit" class="{{ button_class }}" 
+         style="background: none; border: none; padding: 0; cursor: pointer;"> <!-- no background on the image-->
             <img src="{{ url_for('static', filename='images/pinned.png') if note.pin.value == 2 else url_for('static', filename='images/unpinned.png') }}"
                 {% if note.pin.value == 2 %}
                     onmouseover="this.src = 'static/images/hover_unpinned.png'"
@@ -43,33 +44,37 @@
     </form>
 {% endmacro %}
 
-
+ <!-- date with hours -->
 {% macro display_datetime(note) %}
     <div>{{ note.date.strftime('%d-%m-%Y %H:%M') }}</div>
 {% endmacro %}
 
+
+<!-- date without time -->
 {% macro display_date(note) %}
     <div>{{ note.date.strftime('%d-%m-%Y') }}</div>
 {% endmacro %}
 
 
+<!-- text area wont be shown until edit button pressed-->
 {% macro edit_button(note) %}
 <div class="edit_note_container">
-    <form action="{{ url_for('edit_note', note_id=note.id) }}" method="POST" style="display: none;" id="edit-form-{{ note.id }}" class="note-form">
-        <textarea name="content">{{ note.content }}</textarea>
-        <div class="edit-buttons">
-            <button type="submit">Save</button>
-        </div>
-    </form>
-    <button class="edit-button" data-note-id="{{ note.id }}">Edit</button>
+  <form action="{{ url_for('edit_note', note_id=note.id) }}" method="POST" style="display: none;" id="edit-form-{{ note.id }}" class="note-form">  
+    <textarea name="content">{{ note.content }}</textarea>
+    <div class="edit-buttons">
+      <button type="submit">Save</button> <!-- Save button shown when editing -->
+    </div>
+  </form>
+  <button class="edit-button" data-note-id="{{ note.id }}">Edit</button>
 </div>
 {% endmacro %}
 
+<!-- triggers javascript confirmation of confirming delete-->
 {% macro delete_button(note) %}
     <button onclick="deleteNote('{{ note.id }}')">Delete Forever</button>
-
 {% endmacro %}
 
+<!-- triggers javascript confirmation of emptying trash (deleting all binned notes)-->
 {% macro empty_trash() %}
     <div class = "deleteall">
         <form action = "{{url_for('empty_trash')}}" method = "POST" onsubmit = "return confirmEmptyTrash()";>
@@ -78,7 +83,7 @@
     </div>
 {% endmacro %}
 
-
+<!-- returns to index after a search -->
 {% macro cancel_search(page) %}
     <div class = "cancel_search">
         <form action="{{ url_for('cancel_search', page=page) }}" method="POST">

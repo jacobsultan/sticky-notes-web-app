@@ -2,19 +2,21 @@
 {% from "button_macros.html" import display_datetime,display_date,edit_button,delete_button,cancel_search,search_button %}
 {% from "other_macros.html" import archive_link, bin_link, index_link,search_box %}
 
+<!-- macro for the collection of all notes-->
 {% macro render_notes(notes, type) %}
-<div class="notes-grid masonry-container-{{ type }}">
+<div class="notes-grid masonry-container-{{ type }}"> <!-- masonry container library formats the positions of individual notes to slot into each other-->
   {% for note in notes %}
-  <div class="note-container masonry-item">
+  <div class="note-container masonry-item"> <!-- individual note is a masonry item -->
     <div class="note-content">
       <p>{{ note.content }}</p>
-    </div>
-    {% if type == 'main' %}
+    </div> 
+    {% if type == 'main' %}   <!-- different buttons depending if in main or archive or bin-->
         <div class="pin-button">
         {{ toggle_pin_button(note) }}
         </div>
     {% endif %}
     <div class="note-extras">
+      <!-- buttons depending on which page-->
       <div class="note-date">
         {% if type == 'main' %}
         {{ display_datetime(note) }}
@@ -22,10 +24,10 @@
         {{ display_date(note) }}
         {% endif %}
       </div>
-      <div class="note-buttons">
-        {% if type == 'main' %}
+      {% if type == 'main' %}
         {{ edit_button(note) }}
-        {% endif %}
+      {% endif %}
+      <div class="note-buttons">
         {% if type != 'bin' %}
         {{ toggle_archived_button(note) }}
         {% endif %}
@@ -40,6 +42,8 @@
 </div>
 {% endmacro %}
 
+
+<!-- links bar at the top of every webpage to the other two pages (index, archive, bin)-->
 {% macro links_bar(page) %}
     <header class = "header">
         {% if page != 'main' %}
@@ -52,9 +56,10 @@
             {{ bin_link() }}
         {% endif %}
     </header>
-
 {% endmacro %}
 
+
+<!-- collection of search box and cancel search-->
 {% macro search(url, query) %}
     <div class = "search_box">
         {{ search_box(url, query)}}

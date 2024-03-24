@@ -3,6 +3,7 @@ body {
 }
 
 .header_bar {
+    /* Aligns items vertically  */
     display:flex;
     align-items: center;
     justify-content: space-between;
@@ -12,6 +13,7 @@ body {
 }
 
 .links {
+    /* Removes default underlining of links */
     font-size:2rem;
     margin-left: 3rem;
     color:rgb(25, 17, 65);
@@ -20,15 +22,21 @@ body {
 }
 
 .links:hover{
+    /* Links change colour when hovering over them */
     color:rgb(20, 0, 132) ;
 }
+
 .search_box {
     margin-right:3rem;
+    display:flex;
+    flex-direction: column;
 }
+
 .title {
     font-size:2rem;
     margin:0;
 }
+
 .new_note {
     display:flex;
     align-items: center;
@@ -45,10 +53,7 @@ body {
     max-height: 9rem;
 }
 
-.search_box{
-    display:flex;
-    flex-direction: column;
-}
+
 .cancel_search{
     margin-left: auto;
     cursor: pointer; 

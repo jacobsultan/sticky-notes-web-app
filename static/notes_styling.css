@@ -1,9 +1,11 @@
 .notes-grid {
+    /* Centers grid horizontally */
     margin: 0 auto;
 }
 
   
 .note-container {
+    /*  */
     border: 0.2rem solid white;
     padding: 0.5rem;
     display: flex;
@@ -16,14 +18,19 @@
     border-radius: 1rem;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     margin-bottom: 10px;
+    flex-wrap: wrap;
 }
 
 
   
 .note-content {
+    /* Word wrapping in the content of a note so it doesn't overflow*/
+    padding-top: 1rem;
     margin-right: 2rem;
     word-wrap: break-word;
     flex-grow: 1;
+    width: 100%;
+
 }
   
 .note-extras {
@@ -31,9 +38,15 @@
     flex-direction: column; 
     align-items: flex-end; 
     margin-top: auto;
+    width:100%;
     
 }
+
   
+.note-form textarea {
+    width: 100%;
+    box-sizing: border-box;
+}
 .note-date {
     font-size: 0.7rem;
     color: rgb(0, 0, 0, 0.7);
@@ -47,6 +60,9 @@
 .note-buttons {
     display: flex;
     justify-content: flex-end;
+    flex-wrap: wrap;
+
+
     
 }
 
@@ -66,5 +82,6 @@
 }
 
 button {
+    /* cursor changes when hovering over a button*/
     cursor: pointer; 
 }

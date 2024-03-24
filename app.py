@@ -4,37 +4,38 @@ from models import Note, NoteState, NotePin
 from datetime import datetime
 
 
-app = Flask(__name__) # initialised flask and the root path
-app.secret_key = 'secret_key'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///notes.db' #setting db sqlight
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False #' disable Flask-SQLAlchemy event system, which is not needed and helps save resources.'
+app = Flask(__name__) # Initialised flask and the root path
+app.secret_key = 'secret_key' # Secret key needed for session handling
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///notes.db' #Setting db sqlight
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False #Disable Flask-SQLAlchemy event system, which is not needed and helps save resources.'
 
-db.init_app(app)
-
-
-with app.app_context():# push context manually to app
-    db.create_all()
+db.init_app(app) #initialises database
 
 
-@app.route('/', methods=['GET', 'POST']) # root accepts these methods to get info from server and post data
+with app.app_context():
+    db.create_all() # Creates database
+
+
+@app.route('/', methods=['GET', 'POST']) # Route accepts these methods to get info from server and post data
 def index():
-    if request.method == "POST": #if the forms been submitted
-        note_content = request.form["note"] #retrieves note
-        if note_content: #making sure the note isn't empty
-            new_note = Note(content=note_content, state=NoteState.ACTIVE)  # creates a note instance for the model
-            db.session.add(new_note)
-            db.session.commit()
-        return redirect(url_for('index')) #preventative measure for resubmitting 
-    ordered_notes = Note.query.filter(Note.state == NoteState.ACTIVE).order_by(Note.pin != NotePin.PINNED, Note.date.desc()).all()
+    if request.method == "POST": #If the forms been submitted
+        note_content = request.form["note"] # Retrieves note info
+        if note_content: #Making sure the note isn't empty
+            new_note = Note(content=note_content, state=NoteState.ACTIVE)  # Creates a note instance for the model
+            db.session.add(new_note) # Adds new note to the database session
+            db.session.commit() # Like git
+        return redirect(url_for('index')) #Preventative measure for resubmitting 
+    ordered_notes = Note.query.filter(Note.state == NoteState.ACTIVE).order_by(Note.pin != NotePin.PINNED, Note.date.desc()).all() # Filtering notes to get active, and pinned first then by date
     search_results = {'main': [], 'archive': [], 'bin': []}
-    query = request.args.get('query', '')
-    if query:
+    query = request.args.get('query', '') # Receive the search query
+    if query: # Filters for the query from different sections of the notes
         search_results['main'] = Note.query.filter(Note.content.ilike(f'%{query}%'), Note.state==NoteState.ACTIVE).order_by(Note.pin != NotePin.PINNED,Note.date.desc()).all()
         search_results['archive'] = Note.query.filter(Note.content.ilike(f'%{query}%'), Note.state == NoteState.ARCHIVED).order_by(Note.pin != NotePin.PINNED,Note.date.desc()).all()
         search_results['bin'] = Note.query.filter(Note.content.ilike(f'%{query}%'), Note.state == NoteState.BINNED).order_by(Note.pin != NotePin.PINNED,Note.date.desc()).all()
     return render_template('index.html', notes=ordered_notes, search_results=search_results, query=query,STATE_ACTIVE=NoteState.ACTIVE.value, STATE_ARCHIVED=NoteState.ARCHIVED.value, STATE_BINNED=NoteState.BINNED.value,PIN_NOTPINNED=NotePin.NOTPINNED.value, PIN_PINNED=NotePin.PINNED.value)
+    # Renders the template with the various different notes and states
 
-
+# Same as index but specifically for archived notes
 @app.route('/archive',methods=['GET'])
 def archive():
     query = request.args.get('query', '')
@@ -45,8 +46,10 @@ def archive():
     if archived_notes:
         return render_template('archive.html', notes=archived_notes, search_results = search_results_archive, query = query,STATE_ACTIVE=NoteState.ACTIVE.value, STATE_ARCHIVED=NoteState.ARCHIVED.value, STATE_BINNED=NoteState.BINNED.value,PIN_NOTPINNED=NotePin.NOTPINNED.value, PIN_PINNED=NotePin.PINNED.value)
     else:
+        # If there aren't any archived notes left it'll redirect you to index
         return redirect(url_for('index'))
 
+#Same as index but specifically for binned notes
 @app.route('/bin', methods = ['GET'])
 def bin():
     query = request.args.get('query', '')
@@ -60,7 +63,7 @@ def bin():
         return redirect(url_for('index'))
 
 
-
+# Button to toggle pinned back and forth in database
 @app.route('/note/<int:note_id>/toggle-pin', methods=['POST'])
 def toggle_pin(note_id):
     note = Note.query.get(note_id)
@@ -69,21 +72,9 @@ def toggle_pin(note_id):
     else:
         note.pin = NotePin.PINNED
     db.session.commit()
-    return redirect(request.headers.get("Referer"))
-"""
+    return redirect(request.headers.get("Referer")) # Returns to page that was previously on
 
-@app.route('/note/<int:note_id>/toggle-pin', methods=['POST'])
-def toggle_pin(note_id):
-    note = Note.query.get(note_id)
-    if note:
-        if note.pin == NotePin.PINNED:
-            note.pin = NotePin.NOTPINNED
-        else:
-            note.pin = NotePin.PINNED
-        db.session.commit()
-    return redirect(request.headers.get("Referer"))"""
-
-
+# Button to toggle state in database to binned or if binned back to active(main)
 @app.route('/note/<int:note_id>/toggle-bin',methods = ["POST"]) 
 def toggle_bin(note_id):
     note = Note.query.get(note_id)
@@ -94,6 +85,7 @@ def toggle_bin(note_id):
     db.session.commit()
     return redirect(request.headers.get("Referer"))
 
+# Button to toggle state in database to archived or if archived back to active(main)
 @app.route('/note/<int:note_id>/toggle-archived',methods = ["POST"])
 def toggle_archived(note_id):
     note = Note.query.get(note_id)
@@ -104,16 +96,18 @@ def toggle_archived(note_id):
     db.session.commit()
     return redirect(request.headers.get("Referer"))  
 
+# Route for editing notes
 @app.route('/note/<int:note_id>/edit', methods=['POST']) 
 def edit_note(note_id):
-    note = Note.query.get(note_id)
-    edited_content = request.form['content']
+    note = Note.query.get(note_id) #Finds the note from the database from the note id
+    edited_content = request.form['content'] # Retrieves the content to update the note to 
     if edited_content:
         note.content = edited_content
-        note.date = note.date = datetime.utcnow()
+        note.date = note.date = datetime.utcnow() #Updates the timestamp on the note
         db.session.commit()
         return redirect(request.headers.get("Referer"))
 
+# Function for deleting a note
 @app.route('/note/<int:note_id>/delete-note/', methods=["DELETE"])
 def delete_note(note_id):
     note_to_delete = Note.query.get(note_id)
@@ -122,29 +116,30 @@ def delete_note(note_id):
         db.session.commit()
         return '', 204  # Return an empty response with a 204 status code
 
+# If cancellin a search return to page it was called from (trying different means)
 @app.route('/<string:page>/cancel-search', methods=['POST'])
 def cancel_search(page):
     return redirect(url_for(page))  
 
 
-
+# Deletes all notes with in binned state
 @app.route('/empty-trash', methods = ["POST"])
 def empty_trash():
     notes_to_delete = Note.query.filter(Note.state ==NoteState.BINNED).all()
-    for note in notes_to_delete:
+    for note in notes_to_delete: # Loops through binned notes to delete them individually
         db.session.delete(note)
     db.session.commit()
     return redirect(url_for('index'))
 
-
+# Checks if there are any binned notes
 @app.route('/check-bin', methods = ['GET','POST'])
 def check_bin():
     if Note.query.filter(Note.state == NoteState.BINNED).count() == 0:
-        return jsonify({"is_empty": True})
+        return jsonify({"is_empty": True}) #To be passed back to JS so a JSON response
     else:
         return jsonify({"is_empty": False})
     
-
+# Checks if there are any archived notes
 @app.route('/check-archive',methods = ['GET'])
 def check_archive():
     if Note.query.filter(Note.state == NoteState.ARCHIVED).count() == 0:
@@ -155,4 +150,4 @@ def check_archive():
     
 
 if __name__ == '__main__':
-    app.run()
+    app.run() # Left to the end so that if all the parts of the script runs successfully it launches the app

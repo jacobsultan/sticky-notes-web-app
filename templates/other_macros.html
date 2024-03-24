@@ -11,7 +11,7 @@
 {% endmacro %}
 
 
-
+<!-- new note expands depending on the size of the text-->
 {% macro new_note() %}
     <div class = "new_note">
         <form action="/" id = "note_form" method="POST">
@@ -21,7 +21,7 @@
     </div>
 {% endmacro %}
 
-
+<!-- head elements for every html page (stylesheets javascript links and masonry library)-->
 {% macro head_elements() %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -32,6 +32,7 @@
 
 {% endmacro %}
 
+<!--  form to fill to search through notes-->
 {% macro search_box(url, query) %}
     <form action="{{ url_for(url) }}" method="GET" class = "search_bit">
         <input type="text" name="query" placeholder="Search notes..." value="{{ query }}" maxlength = "1000">

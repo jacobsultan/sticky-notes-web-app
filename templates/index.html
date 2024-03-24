@@ -1,4 +1,3 @@
-<!-- -->
 <!-- templates/index.html -->
 <!DOCTYPE html>
 <html lang="en"> 
@@ -22,7 +21,7 @@
 
     <main class="main_app">
         <div class = "notes_list">
-            {% if query %}
+            {% if query %} <!-- If a query is made (ie search) -->
                 
                 {% if search_results.main or search_results.archive or search_results.bin %}
                     
@@ -45,8 +44,8 @@
                 {% endif %}
 
             {% else %}
-                {{ new_note() }}
-                {{ render_notes(notes,'main') }}
+                {{ new_note() }} 
+                {{ render_notes(notes,'main') }} <!-- renders all notes that meet the main conditions (including buttons etc) -->
             {% endif %}
         </div>        
     </main>

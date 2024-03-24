@@ -1,4 +1,4 @@
-// new note
+// creating a new note, receives the input text 
 document.addEventListener('DOMContentLoaded', () => {
     const noteForm = document.getElementById('note_form');
     const noteInput = document.getElementById('note_input');
@@ -6,13 +6,14 @@ document.addEventListener('DOMContentLoaded', () => {
         noteForm.addEventListener('submit', function(e) {
             const noteText = noteInput.value.trim();
             if (!noteText) {
-                e.preventDefault(); // Prevent form submission
+                e.preventDefault(); // Prevent the creation of an empty note
                 alert('Note content cannot be blank.');
             }
         });
     }
 });
 
+//edit button listener to see which note is to be edited
 document.querySelectorAll('.edit-button').forEach(button => {
     button.addEventListener('click', function() {
         const noteId = button.getAttribute('data-note-id');
@@ -21,7 +22,7 @@ document.querySelectorAll('.edit-button').forEach(button => {
     });
 });
 
-// Showing the edit button form
+// Showing the edit button text form which is hidden before a note is chosen to be edited
 function toggleEditForm(noteId) {
     const form = document.getElementById(`edit-form-${noteId}`);
     if (form.style.display === "none" || form.style.display === "") {
@@ -31,7 +32,7 @@ function toggleEditForm(noteId) {
     }
 }
 
-// Function to adjust note positions
+// Function to adjust note positions to fit new text form in there by getting new dimensions
 function adjustNotePositions(noteId) {
     const form = document.getElementById(`edit-form-${noteId}`);
     const formHeight = form.offsetHeight;
@@ -39,7 +40,6 @@ function adjustNotePositions(noteId) {
 
     notesBelow.forEach(note => {
         const noteTop = note.offsetTop;
-        const noteHeight = note.offsetHeight;
 
         if (noteTop >= form.offsetTop && noteTop < form.offsetTop + formHeight) {
             const newTop = noteTop + formHeight;
@@ -49,7 +49,7 @@ function adjustNotePositions(noteId) {
 }
 
 
-// Bin link if empty
+// Bin link to disrupt going to the bin if its empty
 document.addEventListener('DOMContentLoaded', function() {
     const binLink = document.getElementById('bin-link');
     if (binLink){
@@ -66,7 +66,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
-// Archive Link if empty
+// Archive link to disrupt going to the archive if its empty
 document.addEventListener('DOMContentLoaded', function() {
     const archiveLink = document.getElementById('archive-link');
     if (archiveLink){
@@ -85,17 +85,17 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
-
+// confirmation of deleting a note
 function confirmDelete() {
     return confirm('Are you certain you want to delete this permanently?');
 }
 
+//removing a note to be deleted if confirmed to be deleted first
 function deleteNote(noteId) {
     if (confirmDelete()) {
         fetch(`/note/${noteId}/delete-note/`, { method: 'DELETE' })
             .then(response => {
                 if (response.ok) {
-                    // Reload the page or update the UI as needed
                     location.reload();
                 } else {
                     alert('Failed to delete the note.');
@@ -108,17 +108,19 @@ function deleteNote(noteId) {
     }
 }
 
+// Confirmation before deleting all notes in the bin
 function confirmEmptyTrash() {
     return confirm("Selecting 'Yes' will permenantly delete all notes in your bin (this is irreversible)")
 }
 
-//resizing new note box
+// Resizing new note box with the amount of input text
 function resizeTextarea() {
     const textarea = document.getElementById('expandingTextarea');
     textarea.style.height = 'auto'; // Reset height to auto to calculate new height
-    textarea.style.height = textarea.scrollHeight + 'px'; // Set the new height based on content
+    textarea.style.height = textarea.scrollHeight + 'px'; // Set the new height based on content of new text
 }
 
+// load masonry library, for the notes grid to slot into each other 
 document.addEventListener('DOMContentLoaded', function() {
     var masonryContainers = document.querySelectorAll('.notes-grid');
     masonryContainers.forEach(function(container) {
