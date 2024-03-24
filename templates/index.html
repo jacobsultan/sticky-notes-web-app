@@ -1,30 +1,28 @@
 <!-- templates/index.html -->
 <!DOCTYPE html>
 <html lang="en"> 
+
 <head>
     {% from "other_macros.html" import head_elements %}<!-- macros have to be in the right section(head)-->
     {{ head_elements() }} <!-- sets character encoding, links stylesheets, JS and masonry library -->
     <title>Notes</title> <!-- Title for browser not on mainsheet -->
 </head>
+
 <body>
     {% from "button_macros.html" import cancel_search %}
     {% from "other_macros.html" import new_note %}
     {% from "meta_macros.html" import render_notes, links_bar,search %}
     
-
     <div class="header_bar">
-        {{ links_bar('main')}} <!-- Archive and Bin macros -->
+        {{ links_bar('main') }} <!-- Archive and Bin macros -->
         <h1 class = "title" >Notes</h1> <!-- Main title for page -->
-        {{ search('index', query)}} <!-- contains both search box and cancel search, query being the input-->
+        {{ search('index', query) }} <!-- contains both search box and cancel search, query being the input-->
     </div>
-
 
     <main class="main_app">
         <div class = "notes_list">
             {% if query %} <!-- If a query is made (ie search) -->
-                
                 {% if search_results.main or search_results.archive or search_results.bin %}
-                    
                     <h2 class = "search_results">Search Results for: "{{ query }}"</h2>
                     {% if search_results.main %}
                         <h3>Main</h3>

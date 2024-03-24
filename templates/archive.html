@@ -1,11 +1,13 @@
 <!-- templates/archive.html -->
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     {% from "other_macros.html" import head_elements %}
     {{ head_elements() }}
     <title>Notes: <i>Archive</i></title>
 </head>
+
 <body>
     {% from "button_macros.html" import cancel_search %}
     {% from "meta_macros.html" import render_notes, links_bar,search %}
@@ -15,11 +17,10 @@
         <h1 class = "title">Archive</h1>
         {{ search('archive', query)}}
     </div>
+
     <main class = "main_app">
         <div class = "notes_list">
             {% if query %}
-                
-
                 {% if search_results %}
                     <h2 class = "search_results">Search Results for: "{{ query }}" in archive</h2>
                     {{ render_notes(search_results, 'archive') }}
@@ -31,5 +32,6 @@
             {% endif %}
         </div>
     </main>
+    
 </body>
 </html>

@@ -1,3 +1,5 @@
+
+
 {% from "button_macros.html" import toggle_archived_button,toggle_bin_button,toggle_pin_button %}
 {% from "button_macros.html" import display_datetime,display_date,edit_button,delete_button,cancel_search,search_button %}
 {% from "other_macros.html" import archive_link, bin_link, index_link,search_box %}
@@ -5,66 +7,71 @@
 <!-- macro for the collection of all notes-->
 {% macro render_notes(notes, type) %}
 <div class="notes-grid masonry-container-{{ type }}"> <!-- masonry container library formats the positions of individual notes to slot into each other-->
-  {% for note in notes %}
-  <div class="note-container masonry-item"> <!-- individual note is a masonry item -->
-    <div class="note-content">
-      <p>{{ note.content }}</p>
-    </div> 
-    {% if type == 'main' %}   <!-- different buttons depending if in main or archive or bin-->
-        <div class="pin-button">
-        {{ toggle_pin_button(note) }}
-        </div>
-    {% endif %}
-    <div class="note-extras">
-      <!-- buttons depending on which page-->
-      <div class="note-date">
-        {% if type == 'main' %}
-        {{ display_datetime(note) }}
-        {% else %}
-        {{ display_date(note) }}
-        {% endif %}
-      </div>
-      {% if type == 'main' %}
-        {{ edit_button(note) }}
-      {% endif %}
-      <div class="note-buttons">
-        {% if type != 'bin' %}
-        {{ toggle_archived_button(note) }}
-        {% endif %}
-        {{ toggle_bin_button(note) }}
-        {% if type == 'bin' %}
-        {{ delete_button(note) }}
-        {% endif %}
-      </div>
-    </div>
-  </div>
-  {% endfor %}
+	{% for note in notes %}
+		<div class="note-container masonry-item"> <!-- individual note is a masonry item -->
+
+			<div class="note-content">
+				<p>{{ note.content }}</p>
+			</div> 
+
+			{% if type == 'main' %}   <!-- different buttons depending if in main or archive or bin-->
+				<div class="pin-button">
+					{{ toggle_pin_button(note) }}
+				</div>
+			{% endif %}
+
+			<div class="note-extras">
+			<!-- buttons depending on which page-->
+				<div class="note-date">
+					{% if type == 'main' %}
+						{{ display_datetime(note) }}
+					{% else %}
+						{{ display_date(note) }}
+					{% endif %}
+				</div>
+
+				{% if type == 'main' %}
+					{{ edit_button(note) }}
+				{% endif %}
+
+				<div class="note-buttons">
+					{% if type != 'bin' %}
+						{{ toggle_archived_button(note) }}
+					{% endif %}
+					{{ toggle_bin_button(note) }}
+					{% if type == 'bin' %}
+						{{ delete_button(note) }}
+					{% endif %}
+				</div>
+			</div>
+		</div>
+	{% endfor %}
 </div>
 {% endmacro %}
 
 
-<!-- links bar at the top of every webpage to the other two pages (index, archive, bin)-->
+	<!-- links bar at the top of every webpage to the other two pages (index, archive, bin)-->
 {% macro links_bar(page) %}
-    <header class = "header">
-        {% if page != 'main' %}
-            {{ index_link() }}
-        {% endif %}
-        {% if page != 'archive' %}
-            {{ archive_link() }}
-        {% endif %}
-        {% if page != 'bin' %}
-            {{ bin_link() }}
-        {% endif %}
-    </header>
+	<header class = "header">
+		{% if page != 'main' %}
+			{{ index_link() }}
+		{% endif %}
+		{% if page != 'archive' %}
+			{{ archive_link() }}
+		{% endif %}
+		{% if page != 'bin' %}
+			{{ bin_link() }}
+		{% endif %}
+	</header>
 {% endmacro %}
 
 
 <!-- collection of search box and cancel search-->
 {% macro search(url, query) %}
-    <div class = "search_box">
-        {{ search_box(url, query)}}
-        {% if query %}
-            {{ cancel_search(url)}} 
-        {% endif %}
-    </div>
+	<div class = "search_box">
+		{{ search_box(url, query)}}
+		{% if query %}
+			{{ cancel_search(url)}} 
+		{% endif %}
+	</div>
 {% endmacro %}

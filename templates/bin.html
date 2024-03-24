@@ -1,11 +1,13 @@
 <!-- templates/bin.html -->
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     {% from "other_macros.html" import head_elements %}
     {{ head_elements() }}
     <title>Notes: <i>Recently Deleted</i></title>
 </head>
+
 <body>
     {% from "button_macros.html" import empty_trash,cancel_search %}
     {% from "other_macros.html" import search_box %}
@@ -14,17 +16,12 @@
     <div class = "header_bar">
         {{ links_bar('bin')}}
         <h1 class = "title">Recently Deleted</h1>
-        {{ search_box('bin', query)}}
-
+        {{ search_box('bin', query) }}
     </div>
     
-
     <main class = "main_app">
-
-
         <div class = "notes_list">
             {% if query %}
-
                 {{ cancel_search('bin') }}
 
                 {% if search_results %}
@@ -38,8 +35,6 @@
                 {{ empty_trash() }}
                 {{ render_notes(notes ,'bin') }}
             {% endif %}
-
-            </div>
         </div>
     </main>
 </body>

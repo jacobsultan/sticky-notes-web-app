@@ -32,7 +32,9 @@ def index():
         search_results['main'] = Note.query.filter(Note.content.ilike(f'%{query}%'), Note.state==NoteState.ACTIVE).order_by(Note.pin != NotePin.PINNED,Note.date.desc()).all()
         search_results['archive'] = Note.query.filter(Note.content.ilike(f'%{query}%'), Note.state == NoteState.ARCHIVED).order_by(Note.pin != NotePin.PINNED,Note.date.desc()).all()
         search_results['bin'] = Note.query.filter(Note.content.ilike(f'%{query}%'), Note.state == NoteState.BINNED).order_by(Note.pin != NotePin.PINNED,Note.date.desc()).all()
-    return render_template('index.html', notes=ordered_notes, search_results=search_results, query=query,STATE_ACTIVE=NoteState.ACTIVE.value, STATE_ARCHIVED=NoteState.ARCHIVED.value, STATE_BINNED=NoteState.BINNED.value,PIN_NOTPINNED=NotePin.NOTPINNED.value, PIN_PINNED=NotePin.PINNED.value)
+    return render_template('index.html', notes=ordered_notes, search_results=search_results,
+                            query=query,STATE_ACTIVE=NoteState.ACTIVE.value, STATE_ARCHIVED=NoteState.ARCHIVED.value,
+                              STATE_BINNED=NoteState.BINNED.value,PIN_NOTPINNED=NotePin.NOTPINNED.value, PIN_PINNED=NotePin.PINNED.value)
     # Renders the template with the various different notes and states
 
 # Same as index but specifically for archived notes
@@ -44,7 +46,9 @@ def archive():
     if query:
         search_results_archive = Note.query.filter(Note.content.ilike(f'%{query}%'), Note.state == NoteState.ARCHIVED).order_by(Note.pin != NotePin.PINNED,Note.date.desc()).all()
     if archived_notes:
-        return render_template('archive.html', notes=archived_notes, search_results = search_results_archive, query = query,STATE_ACTIVE=NoteState.ACTIVE.value, STATE_ARCHIVED=NoteState.ARCHIVED.value, STATE_BINNED=NoteState.BINNED.value,PIN_NOTPINNED=NotePin.NOTPINNED.value, PIN_PINNED=NotePin.PINNED.value)
+        return render_template('archive.html', notes=archived_notes, search_results = search_results_archive,
+                                query = query,STATE_ACTIVE=NoteState.ACTIVE.value, STATE_ARCHIVED=NoteState.ARCHIVED.value,
+                                  STATE_BINNED=NoteState.BINNED.value,PIN_NOTPINNED=NotePin.NOTPINNED.value, PIN_PINNED=NotePin.PINNED.value)
     else:
         # If there aren't any archived notes left it'll redirect you to index
         return redirect(url_for('index'))
@@ -58,7 +62,9 @@ def bin():
     if query:
         search_results_bin = Note.query.filter(Note.content.ilike(f'%{query}%'), Note.state == NoteState.BINNED).order_by(Note.pin != NotePin.PINNED,Note.date.desc()).all()
     if binned_notes:
-        return render_template('bin.html', notes=binned_notes, search_results = search_results_bin, query = query,STATE_ACTIVE=NoteState.ACTIVE.value, STATE_ARCHIVED=NoteState.ARCHIVED.value, STATE_BINNED=NoteState.BINNED.value,PIN_NOTPINNED=NotePin.NOTPINNED.value, PIN_PINNED=NotePin.PINNED.value)
+        return render_template('bin.html', notes=binned_notes, search_results = search_results_bin, query = query,
+                               STATE_ACTIVE=NoteState.ACTIVE.value, STATE_ARCHIVED=NoteState.ARCHIVED.value,
+                                 STATE_BINNED=NoteState.BINNED.value,PIN_NOTPINNED=NotePin.NOTPINNED.value, PIN_PINNED=NotePin.PINNED.value)
     else:
         return redirect(url_for('index'))
 
@@ -146,8 +152,6 @@ def check_archive():
         return jsonify({"is_empty": True})
     else:
         return jsonify({"is_empty": False})
-
-    
 
 if __name__ == '__main__':
     app.run() # Left to the end so that if all the parts of the script runs successfully it launches the app
