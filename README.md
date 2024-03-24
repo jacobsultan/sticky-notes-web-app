@@ -4,7 +4,7 @@
 
 * Make sure you have python 3+ installed
 * Activate the Venv `source venv/bin/activate`
-* Pip install -r requirements.txt
-* Run flask 'flask --app app run'
+* 'pip3 install -r requirements.txt'
+* Run flask 'python3 app.py'
 
 
