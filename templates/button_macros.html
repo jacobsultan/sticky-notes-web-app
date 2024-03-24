@@ -1,51 +1,55 @@
 {% macro toggle_bin_button(note) %}
     <form action="{{ url_for('toggle_bin', note_id=note.id) }}" method="POST" >
-        <button type="submit">{{ 'Remove from bin' if note.binned else 'Move to bin' }}</button>
+        <button type="submit">
+            {% if note.state.value == 3 %}
+                Remove from bin
+            {% else %}
+                Move to bin
+            {% endif %}
+
+        </button>
     </form>
 {% endmacro %}
 
 {% macro toggle_archived_button(note) %}
     <form action="{{ url_for('toggle_archived', note_id=note.id) }}" method="POST" >
-        <button type="submit">{{ 'Unarchive' if note.archived else 'Archive' }}</button>
-    </form>
-{% endmacro %}
-
-{% macro toggle_pin_button(note, button_class="toggle_pin_button") %}
-    <form action="{{ url_for('toggle_pin',note_id = note.id) }}" method="POST">
-        <button type="submit">{{ 'Unpin' if note.pinned else 'Pin' }}</button>
-    </form>
-{% endmacro %}
-
-{% macro toggle_pin_button(note, button_class="toggle_pin_button") %}
-    <form action="{{ url_for('toggle_pin', note_id=note.id) }}" method="POST">
-        <button type="submit" class="{{ button_class }} {{ 'pinned' if note.pinned else 'unpinned' }}">
-            <img src="{{ url_for('static', filename='images/pinned.png') if note.pinned else url_for('static', filename='images/unpinned.png') }}" alt="Pin" onmouseover="this.src = 'static/images/hover_unpinned.png'">
-        </button>
-    </form>
-{% endmacro %}
-
-{% macro toggle_pin_button(note, button_class="toggle_pin_button") %}
-    <form action="{{ url_for('toggle_pin', note_id=note.id) }}" method="POST">
-        <button type="submit" class="{{ button_class }} {{ 'pinned' if note.pinned else 'unpinned' }}"
-                style="background: none; border: none; padding: 0; cursor: pointer;">
-            <img src="{{ url_for('static', filename='images/pinned.png') if note.pinned else url_for('static', filename='images/unpinned.png') }}"
-            {% if note.pinned %}
-                onmouseover="this.src = 'static/images/hover_unpinned.png'"
-                onmouseout = "this.src = 'static/images/pinned.png'"
+        <button type="submit">
+            {% if note.state.value == 2 %}
+                Remove from Archive
             {% else %}
-                onmouseover="this.src = 'static/images/pinned.png'"
-                onmouseout = "this.src = 'static/images/unpinned.png'"
+                Archive
             {% endif %}
         </button>
     </form>
 {% endmacro %}
 
+
+
+
+{% macro toggle_pin_button(note, button_class="toggle_pin_button") %}
+    <form action="{{ url_for('toggle_pin', note_id=note.id) }}" method="POST">
+        <button type="submit" class="{{ button_class }}"
+         style="background: none; border: none; padding: 0; cursor: pointer;">
+            <img src="{{ url_for('static', filename='images/pinned.png') if note.pin.value == 2 else url_for('static', filename='images/unpinned.png') }}"
+                {% if note.pin.value == 2 %}
+                    onmouseover="this.src = 'static/images/hover_unpinned.png'"
+                    onmouseout="this.src = 'static/images/pinned.png'"
+                {% else %}
+                    onmouseover="this.src = 'static/images/pinned.png'"
+                    onmouseout="this.src = 'static/images/unpinned.png'"
+                {% endif %}
+            >
+        </button>
+    </form>
+{% endmacro %}
+
+
 {% macro display_datetime(note) %}
-    <div>Last updated: {{ note.date.strftime('%d-%m-%Y %H:%M') }}</div>
+    <div>{{ note.date.strftime('%d-%m-%Y %H:%M') }}</div>
 {% endmacro %}
 
 {% macro display_date(note) %}
-    <div>Last updated: {{ note.date.strftime('%d-%m-%Y') }}</div>
+    <div>{{ note.date.strftime('%d-%m-%Y') }}</div>
 {% endmacro %}
 
 
