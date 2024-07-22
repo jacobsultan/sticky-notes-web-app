@@ -20,6 +20,6 @@ I found it surprisingly enjoyable and loved sticking all these different working
 * Can create notes
 * Can edit those notes and save changes
 * Functioning archive, and bin and moving notes between any of these
-* Clearing bin button to empty the trash permenantly
+* Clearing bin button to empty the trash permanently
 * Search feature which searches between the different note sections
 * Pin button to move the notes to the top of the list
