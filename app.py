@@ -3,6 +3,10 @@ from models import db
 from models import Note, NoteState, NotePin
 from datetime import datetime
 
+# Create the Flask application instance
+app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///notes.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 app = Flask(__name__) # Initialised flask and the root path
 app.secret_key = 'secret_key' # Secret key needed for session handling
@@ -20,7 +24,9 @@ with app.app_context():
 def index():
     if request.method == "POST": #If the forms been submitted
         note_content = request.form["note"] # Retrieves note info
-        if note_content: #Making sure the note isn't empty
+        if not note_content or len(note_content) > 10000:
+            return 'Note content must be between 1 and 10000 characters', 400
+        if note_content.strip():  # Check if content is not empty
             new_note = Note(content=note_content, state=NoteState.ACTIVE)  # Creates a note instance for the model
             db.session.add(new_note) # Adds new note to the database session
             db.session.commit() # Like git
@@ -72,7 +78,7 @@ def bin():
 # Button to toggle pinned back and forth in database
 @app.route('/note/<int:note_id>/toggle-pin', methods=['POST'])
 def toggle_pin(note_id):
-    note = Note.query.get(note_id)
+    note =  db.session.get(Note,note_id)
     if note.pin == NotePin.PINNED:
         note.pin = NotePin.NOTPINNED
     else:
@@ -83,7 +89,7 @@ def toggle_pin(note_id):
 # Button to toggle state in database to binned or if binned back to active(main)
 @app.route('/note/<int:note_id>/toggle-bin',methods = ["POST"]) 
 def toggle_bin(note_id):
-    note = Note.query.get(note_id)
+    note =  db.session.get(Note,note_id)
     if note.state == NoteState.BINNED:
         note.state = NoteState.ACTIVE
     else:
@@ -94,7 +100,7 @@ def toggle_bin(note_id):
 # Button to toggle state in database to archived or if archived back to active(main)
 @app.route('/note/<int:note_id>/toggle-archived',methods = ["POST"])
 def toggle_archived(note_id):
-    note = Note.query.get(note_id)
+    note =  db.session.get(Note,note_id)
     if note.state == NoteState.ACTIVE:
         note.state = NoteState.ARCHIVED
     else:
@@ -105,7 +111,7 @@ def toggle_archived(note_id):
 # Route for editing notes
 @app.route('/note/<int:note_id>/edit', methods=['POST']) 
 def edit_note(note_id):
-    note = Note.query.get(note_id) #Finds the note from the database from the note id
+    note = db.session.get(Note,note_id) #Finds the note from the database from the note id
     edited_content = request.form['content'] # Retrieves the content to update the note to 
     if edited_content:
         note.content = edited_content
@@ -116,12 +122,11 @@ def edit_note(note_id):
 # Function for deleting a note
 @app.route('/note/<int:note_id>/delete-note/', methods=["DELETE"])
 def delete_note(note_id):
-    note_to_delete = Note.query.get(note_id)
+    note_to_delete =  db.session.get(Note,note_id)
     if note_to_delete:
         db.session.delete(note_to_delete)
         db.session.commit()
         return '', 204  # Return an empty response with a 204 status code
-
 # If cancellin a search return to page it was called from (trying different means)
 @app.route('/<string:page>/cancel-search', methods=['POST'])
 def cancel_search(page):
@@ -152,6 +157,27 @@ def check_archive():
         return jsonify({"is_empty": True})
     else:
         return jsonify({"is_empty": False})
+
+@app.route('/note/<int:note_id>/move-to-bin', methods=['POST'])
+def move_to_bin(note_id):
+    note = db.session.get(Note, note_id)
+    if note:
+        note.state = NoteState.BINNED
+        db.session.commit()
+    return redirect(url_for('index'))
+
+@app.route('/note/<int:note_id>/restore', methods=['POST'])
+def restore_from_bin(note_id):
+    note = db.session.get(Note, note_id)
+    if note:
+        note.state = NoteState.ACTIVE
+        db.session.commit()
+    return redirect(url_for('index'))
+
+@app.route('/archived')
+def archived_notes():
+    notes = Note.query.filter_by(state=NoteState.ARCHIVED).all()
+    return render_template('archived.html', notes=notes)
 
 if __name__ == '__main__':
     app.run() # Left to the end so that if all the parts of the script runs successfully it launches the app
