@@ -52,7 +52,7 @@ def archive():
     if query:
         search_results_archive = Note.query.filter(Note.content.ilike(f'%{query}%'), Note.state == NoteState.ARCHIVED).order_by(Note.pin != NotePin.PINNED,Note.date.desc()).all()
     if archived_notes:
-        return render_template('archive.html', notes=archived_notes, search_results = search_results_archive,
+        return render_template('archived.html', notes=archived_notes, search_results = search_results_archive,
                                 query = query,STATE_ACTIVE=NoteState.ACTIVE.value, STATE_ARCHIVED=NoteState.ARCHIVED.value,
                                   STATE_BINNED=NoteState.BINNED.value,PIN_NOTPINNED=NotePin.NOTPINNED.value, PIN_PINNED=NotePin.PINNED.value)
     else:
