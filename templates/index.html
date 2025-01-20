@@ -20,6 +20,15 @@
     </div>
 
     <main class="main_app">
+        <!-- Display Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <script type="text/javascript">
+               alert("{{ messages[0][1] }}");  // Display the first flashed message in an alert box
+            </script>
+        {% endif %}
+    {% endwith %}
+
         <div class = "notes_list">
             {% if query %} <!-- If a query is made (ie search) -->
                 {% if search_results.main or search_results.archive or search_results.bin %}

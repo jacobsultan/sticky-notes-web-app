@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, jsonify
+from flask import Flask, render_template, request, redirect, url_for, jsonify,flash
 from flask_migrate import Migrate
 from models import db
 from models import Note, NoteState, NotePin
@@ -30,13 +30,14 @@ migrate = Migrate(app, db)
 def index():
     if request.method == "POST": #If the forms been submitted
         note_content = request.form["note"] # Retrieves note info
-        if not note_content or len(note_content) > 10000:
-            return 'Note content must be between 1 and 10000 characters', 400
-        if note_content.strip():  # Check if content is not empty
-            new_note = Note(content=note_content, state=NoteState.ACTIVE)  # Creates a note instance for the model
-            db.session.add(new_note) # Adds new note to the database session
-            db.session.commit() # Like git
-        return redirect(url_for('index')) #Preventative measure for resubmitting 
+        if not note_content or len(note_content) > 10000:  # Validate the note content
+            flash("Note content must be between 1 and 10000 characters", "error")
+        elif note_content.strip():  # Check if the content is not empty
+            new_note = Note(content=note_content, state=NoteState.ACTIVE)  # Create the note
+            db.session.add(new_note)  # Add the note to the session
+            db.session.commit()  # Commit the changes
+        else:
+            flash("Note content cannot be empty", "error")
     ordered_notes = Note.query.filter(Note.state == NoteState.ACTIVE).order_by(Note.pin != NotePin.PINNED, Note.date.desc()).all() # Filtering notes to get active, and pinned first then by date
     search_results = {'main': [], 'archive': [], 'bin': []}
     query = request.args.get('query', '') # Receive the search query
