@@ -13,8 +13,8 @@ app = Flask(__name__)
 import os
 app.secret_key = os.getenv('SECRET_KEY', 'fallback_secret_key')
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv(
-    'DATABASE_URL',
-    f"postgresql://flask_user:{os.getenv('DB_PASSWORD')}@localhost:5432/sticky_notes"
+    'DATABASE_URL',  # Use DATABASE_URL if it exists
+    'postgresql://flask_user:hello@localhost:5432/sticky_notes'  # Hardcode for fallback if necessary
 )
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
