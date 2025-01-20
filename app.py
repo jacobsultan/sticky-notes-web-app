@@ -3,11 +3,16 @@ from flask_migrate import Migrate
 from models import db
 from models import Note, NoteState, NotePin
 from datetime import datetime
+from dotenv import load_dotenv
+import os
+
+load_dotenv()  # Load .env file
 
 # Create the Flask application instance
 app = Flask(__name__)
-app.secret_key = 'secret_key' # Secret key needed for session handling
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://flask_user:hello@localhost:5432/sticky_notes'
+import os
+app.secret_key = os.getenv('SECRET_KEY', 'fallback_secret_key')
+app.config['SQLALCHEMY_DATABASE_URI'] = f"postgresql://flask_user:{os.getenv('DB_PASSWORD')}@localhost:5432/sticky_notes"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 
