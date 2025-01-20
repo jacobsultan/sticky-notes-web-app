@@ -116,15 +116,27 @@ def toggle_archived(note_id):
     return redirect(request.headers.get("Referer"))  
 
 # Route for editing notes
-@app.route('/note/<int:note_id>/edit', methods=['POST']) 
+@app.route('/note/<int:note_id>/edit', methods=['GET', 'POST'])
 def edit_note(note_id):
-    note = db.session.get(Note,note_id) #Finds the note from the database from the note id
-    edited_content = request.form['content'] # Retrieves the content to update the note to 
-    if edited_content:
+    note = db.session.get(Note, note_id)  # Finds the note from the database using the note id
+    
+    if request.method == 'POST':
+        edited_content = request.form['content']  # Retrieves the content to update the note to 
+        
+        # Check for validation: content should not be empty and should be between 1 and 10,000 characters
+        if not edited_content or len(edited_content) > 10000:
+            flash("Note content must be between 1 and 10000 characters", "error")
+            return render_template('edit_note.html', note=note)  # Re-render the edit page with error message
+        
+        # If the content is valid, update the note and commit to the database
         note.content = edited_content
-        note.date = note.date = datetime.utcnow() #Updates the timestamp on the note
+        note.date = datetime.utcnow()  # Updates the timestamp on the note
         db.session.commit()
-        return redirect(request.headers.get("Referer"))
+        
+        return redirect(request.headers.get("Referer"))  # Redirects back to the previous page
+
+    # Render the edit form with the current note's content for the GET request
+    return render_template('edit_note.html', note=note)
 
 # Function for deleting a note
 @app.route('/note/<int:note_id>/delete-note/', methods=["DELETE"])
