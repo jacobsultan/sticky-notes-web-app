@@ -1,20 +1,22 @@
 from flask import Flask, render_template, request, redirect, url_for, jsonify
+from flask_migrate import Migrate
 from models import db
 from models import Note, NoteState, NotePin
 from datetime import datetime
 
 # Create the Flask application instance
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///notes.db'
+app.secret_key = 'secret_key' # Secret key needed for session handling
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://flask_user:hello@localhost:5432/sticky_notes'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-app = Flask(__name__) # Initialised flask and the root path
-app.secret_key = 'secret_key' # Secret key needed for session handling
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///notes.db' #Setting db sqlight
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False #Disable Flask-SQLAlchemy event system, which is not needed and helps save resources.'
+
+
 
 db.init_app(app) #initialises database
 
+# Initialize Flask-Migrate
+migrate = Migrate(app, db)
 
 with app.app_context():
     db.create_all() # Creates database
