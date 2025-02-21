@@ -49,7 +49,6 @@ def test_search_notes(client):
         db.session.bulk_save_objects(notes)
         db.session.commit()
 
-    # Assuming search uses '?query=recipe' on the '/' route
     response = client.get('/?query=recipe')
     assert response.status_code == 200
     assert b'Apple pie recipe' in response.data
@@ -57,9 +56,7 @@ def test_search_notes(client):
     assert b'Shopping list' not in response.data
 
 def test_create_note(client):
-    # Match the form field name from your template (likely 'note' not 'note_content')
     response = client.post('/', data={'note': 'New test note'})
-    # After creation, app redirects back to '/'
     assert response.status_code == 302
     with client.application.app_context():
         assert Note.query.count() == 1
@@ -77,7 +74,7 @@ def test_edit_note(client, sample_note):
         assert updated_note.content == 'Updated content'
 
 def test_delete_note(client, sample_note):
-    # Assuming that delete-note actually deletes the note permanently
+    # delete-note actually deletes the note permanently
     response = client.delete(f'/note/{sample_note.id}/delete-note/')
     assert response.status_code == 204
     with client.application.app_context():
@@ -85,7 +82,7 @@ def test_delete_note(client, sample_note):
         assert deleted_note is None  # If it's truly deleted from DB
 
 def test_archive_note(client, sample_note):
-    # Your code uses toggle-archived to change state
+    #toggle-archived to change state
     response = client.post(f'/note/{sample_note.id}/toggle-archived')
     assert response.status_code == 302
     with client.application.app_context():
@@ -102,7 +99,7 @@ def test_empty_bin(client):
         db.session.bulk_save_objects(notes)
         db.session.commit()
 
-    # Assuming empty-trash is the correct endpoint
+    #  empty-trash is the correct endpoint
     response = client.post('/empty-trash')
     assert response.status_code == 302
     with client.application.app_context():
@@ -170,7 +167,7 @@ def test_restore_note_from_bin(client):
 
 def test_note_creation_with_empty_content(client):
     response = client.post('/', data={'note': ''})
-    assert response.status_code == 400  # or whatever status code you return for invalid input
+    assert response.status_code == 400  
 
 def test_archived_notes_view(client):
     notes = [
@@ -211,18 +208,15 @@ def test_concurrent_note_updates(client, sample_note):
         note1.content = 'Update 1'
         note2.content = 'Update 2'
         
-        db.session.commit()  # First update
-        
-        # Second update should either fail or handle the conflict
+        db.session.commit()  
         try:
             db.session.commit()
         except:
             db.session.rollback()
-            # Your conflict resolution logic here
 
 def test_note_max_length(client):
     """Test that notes cannot exceed maximum length"""
-    long_content = 'a' * 10001  # Assuming max length is 10000
+    long_content = 'a' * 10001  
     response = client.post('/', data={'note': long_content})
     assert response.status_code == 400
 
@@ -264,5 +258,4 @@ def test_empty_search_results(client):
     """Test behavior when search returns no results"""
     response = client.get('/?query=nonexistentterm')
     assert response.status_code == 200
-    # Look for HTML-encoded version of the message
     assert b'nonexistentterm" :&#40;' in response.data

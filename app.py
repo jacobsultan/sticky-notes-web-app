@@ -28,16 +28,18 @@ migrate = Migrate(app, db)
 
 @app.route('/', methods=['GET', 'POST']) # Route accepts these methods to get info from server and post data
 def index():
-    if request.method == "POST": #If the forms been submitted
-        note_content = request.form["note"] # Retrieves note info
-        if not note_content or len(note_content) > 10000:  # Validate the note content
-            flash("Note content must be between 1 and 10000 characters", "error")
-        elif note_content.strip():  # Check if the content is not empty
-            new_note = Note(content=note_content, state=NoteState.ACTIVE)  # Create the note
-            db.session.add(new_note)  # Add the note to the session
-            db.session.commit()  # Commit the changes
-        else:
-            flash("Note content cannot be empty", "error")
+    if request.method == "POST":
+        note_content = request.form.get("note", "").strip()
+        if not note_content:
+            return '', 400
+        if len(note_content) > 10000:
+            return '', 400
+            
+        new_note = Note(content=note_content, state=NoteState.ACTIVE)
+        db.session.add(new_note)
+        db.session.commit()
+        return redirect(url_for('index'))
+        
     ordered_notes = Note.query.filter(Note.state == NoteState.ACTIVE).order_by(Note.pin != NotePin.PINNED, Note.date.desc()).all() # Filtering notes to get active, and pinned first then by date
     search_results = {'main': [], 'archive': [], 'bin': []}
     query = request.args.get('query', '') # Receive the search query
@@ -197,6 +199,7 @@ def restore_from_bin(note_id):
 def archived_notes():
     notes = Note.query.filter_by(state=NoteState.ARCHIVED).all()
     return render_template('archived.html', notes=notes)
+
 
 if __name__ == '__main__':
     with app.app_context():
