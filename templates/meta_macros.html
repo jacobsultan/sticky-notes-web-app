@@ -1,5 +1,3 @@
-
-
 {% from "button_macros.html" import toggle_archived_button,toggle_bin_button,toggle_pin_button %}
 {% from "button_macros.html" import display_datetime,display_date,edit_button,delete_button,cancel_search,search_button %}
 {% from "other_macros.html" import archive_link, bin_link, index_link,search_box %}
@@ -30,11 +28,10 @@
 					{% endif %}
 				</div>
 
-				{% if type == 'main' %}
-					{{ edit_button(note) }}
-				{% endif %}
-
 				<div class="note-buttons">
+					{% if type == 'main' %}
+						{{ edit_button(note) }}
+					{% endif %}
 					{% if type != 'bin' %}
 						{{ toggle_archived_button(note) }}
 					{% endif %}

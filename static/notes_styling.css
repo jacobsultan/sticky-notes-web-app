@@ -5,48 +5,51 @@
 
   
 .note-container {
-    /*  */
     border: 0.2rem solid white;
     padding: 0.5rem;
     display: flex;
     flex-direction: column;
-    min-width: 13rem;
-    max-width:20rem;
+    min-width: 20rem;
+    max-width: 25rem;
     width: calc(33.33% - 10px);
     position: relative;
     height: auto;
     border-radius: 1rem;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     margin-bottom: 10px;
-    flex-wrap: wrap;
 }
-
 
   
 .note-content {
-    /* Word wrapping in the content of a note so it doesn't overflow*/
     padding-top: 1rem;
     margin-right: 2rem;
     word-wrap: break-word;
     flex-grow: 1;
     width: 100%;
-
 }
+
   
 .note-extras {
     display: flex; 
     flex-direction: column; 
     align-items: flex-end; 
     margin-top: auto;
-    width:100%;
-    
+    width: 100%;
 }
 
   
-.note-form textarea {
+.note-form {
+    position: relative;
     width: 100%;
-    box-sizing: border-box;
+    margin: 0.5rem 0;
+    padding: 0.5rem;
+    display: none; /* Hidden by default */
+    background: white;
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    order: -1; /* Makes form appear above buttons */
 }
+
 .note-date {
     font-size: 0.7rem;
     color: rgb(0, 0, 0, 0.7);
@@ -60,15 +63,20 @@
 .note-buttons {
     display: flex;
     justify-content: flex-end;
-    flex-wrap: wrap;
-
-
-    
+    flex-wrap: nowrap;
+    gap: 0.5rem;
+    width: 100%;
+    align-items: center;
 }
 
-.note-buttons button {
-    margin-left: 0.5rem;
-
+.note-buttons button,
+.note-buttons form {
+    display: inline-flex;
+    margin: 0;
+    white-space: nowrap;
+    font-size: 0.9rem;
+    padding: 0.3rem 0.6rem;
+    height: fit-content;
 }
 
 .pin-button {
@@ -84,4 +92,25 @@
 button {
     /* cursor changes when hovering over a button*/
     cursor: pointer; 
+}
+
+.note-form textarea {
+    width: 100%;
+    min-height: 5rem;
+    margin-bottom: 0.5rem;
+    box-sizing: border-box;
+    resize: vertical; /* Allow vertical resizing only */
+}
+
+.edit-container {
+    display: inline-flex; /* Change to inline-flex */
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.edit-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
 }

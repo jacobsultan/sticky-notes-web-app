@@ -57,12 +57,14 @@
 
 <!-- text area wont be shown until edit button pressed-->
 {% macro edit_button(note) %}
-<div class="edit_note_container">
+<div class="edit-container">
+    <button class="edit-button" data-note-id="{{ note.id }}">Edit</button>
     <form action="{{ url_for('edit_note', note_id=note.id) }}" method="POST" style="display: none;" id="edit-form-{{ note.id }}" class="note-form">  
         <textarea name="content">{{ note.content }}</textarea>
-        <div class="edit-buttons"> <button type="submit">Save</button></div>  <!-- Save button shown when editing -->
+        <div class="edit-buttons">
+            <button type="submit">Save</button>
+        </div>
     </form>
-    <button class="edit-button" data-note-id="{{ note.id }}">Edit</button>
 </div>
 {% endmacro %}
 

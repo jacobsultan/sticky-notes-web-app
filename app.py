@@ -199,4 +199,6 @@ def archived_notes():
     return render_template('archived.html', notes=notes)
 
 if __name__ == '__main__':
-    app.run() # Left to the end so that if all the parts of the script runs successfully it launches the app
+    with app.app_context():
+        db.create_all()
+    app.run(debug=True)
